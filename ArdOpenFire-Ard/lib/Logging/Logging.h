@@ -23,7 +23,7 @@ class Logger{
 
 public:
   //Logger(SoftwareSerial &s, SoftwareSerial &rf);
-  Logger(int &logLevel=LOG_LOGLEVEL, HardwareSerial &s, SoftwareSerial &rf);
+  Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL);
 
   void debug(String &msg);
   void info(String &msg);
@@ -31,11 +31,11 @@ public:
   void error(String &msg);
 
 private:
-  void print(String &msg, int &level);
+  void print(String &msg, int level);
 
-  HardwareSerial &_s;
-  SoftwareSerial &_rf;
-  int &_logLevel;
+  HardwareSerial* _s;
+  SoftwareSerial* _rf;
+  int* _logLevel;
 };
 
 #endif

@@ -1,40 +1,40 @@
 #include "Logging.h"
 
-Logger::Logger(int &logLevel, HardwareSerial &s, SoftwareSerial &rf)
+Logger::Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL)
 {
   this->_logLevel = logLevel;
-  this->_s = s;
-  this->_rf = rf;
+  this->_s = &s;
+  this->_rf = &rf;
 }
 void Logger::debug(String &msg)
 {
   if(this->_logLevel > 2)
   {
-    Logger::print(msg, 3);
+    print(msg, 3);
   }
 }
 void Logger::info(String &msg)
 {
   if(this->_logLevel > 1)
   {
-    Logger::print(msg, 2);
+    print(msg, 2);
   }
 }
 void Logger::warn(String &msg)
 {
   if(this->_logLevel > 0)
   {
-    Logger::print(msg, 1);
+    print(msg, 1);
   }
 }
 void Logger::error(String &msg)
 {
   if(this->_logLevel > -1)
   {
-    Logger::print(msg, 0);
+    this->print(msg, 0);
   }
 }
-void Logger::print(String &msg, int &level)
+void Logger::print(String &msg, int level)
 {
   String buffer = "";
   if(LOG_LOG_MESSAGE_TYPE)
@@ -61,13 +61,13 @@ void Logger::print(String &msg, int &level)
     buffer += msg;
 
     //Print / Send the message
-    this->_s.println(buffer);
-    this->_rf.println(buffer);
+    this->_s->println(buffer);
+    this->_rf->println(buffer);
   }
   else
   {
     //Print / Send the message without the type of message
-    this->_s.println(buffer);
-    this->_rf.println(buffer);
+    this->_s->println(buffer);
+    this->_rf->println(buffer);
   }
 }
