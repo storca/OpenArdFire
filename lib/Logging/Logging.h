@@ -21,7 +21,12 @@
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-
+/**
+ * Logger object
+ * @param s        Default serial of Arduino
+ * @param rf       Second serial such as LORA
+ * @param logLevel Level of logging
+ */
 class Logger{
 
 public:
