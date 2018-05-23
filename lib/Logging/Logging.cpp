@@ -6,9 +6,9 @@
  * @param rf       LORA serial port
  * @param logLevel level of logging
  */
-Logger::Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL)
+Logger::Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel)
 {
-  this->_logLevel = logLevel;
+  this->_logLevel = &logLevel;
   this->_s = &s;
   this->_rf = &rf;
 }
@@ -19,7 +19,7 @@ Logger::Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL)
  */
 void Logger::debug(String &msg)
 {
-  if(this->_logLevel > 2)
+  if(*(this->_logLevel) > 2)
   {
     print(msg, 3);
   }
@@ -31,7 +31,7 @@ void Logger::debug(String &msg)
  */
 void Logger::info(String &msg)
 {
-  if(this->_logLevel > 1)
+  if(*(this->_logLevel) > 1)
   {
     print(msg, 2);
   }
@@ -43,7 +43,7 @@ void Logger::info(String &msg)
  */
 void Logger::warn(String &msg)
 {
-  if(this->_logLevel > 0)
+  if(*(this->_logLevel) > 0)
   {
     print(msg, 1);
   }
@@ -55,7 +55,7 @@ void Logger::warn(String &msg)
  */
 void Logger::error(String &msg)
 {
-  if(this->_logLevel > -1)
+  if(*(this->_logLevel) > -1)
   {
     this->print(msg, 0);
   }

@@ -37,7 +37,7 @@ private:
 
   HardwareSerial* _s;
   SoftwareSerial* _rf;
-  int* _logLevel;
+  int *_logLevel;
 };
 
 #endif
