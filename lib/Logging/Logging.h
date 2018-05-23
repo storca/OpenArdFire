@@ -15,7 +15,7 @@
 
 //Default level of logging
 #define LOG_LOGLEVEL 0
-//Log message type ? -> Adds a "WARN: " or "ERR: " to the begining of the message
+//Log message type ? -> Adds a "WARN: " or "ERR: " at the begining of the message
 #define LOG_LOG_MESSAGE_TYPE false
 
 #include <Arduino.h>
@@ -25,7 +25,6 @@
 class Logger{
 
 public:
-  //Logger(SoftwareSerial &s, SoftwareSerial &rf);
   Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL);
 
   void debug(String &msg);

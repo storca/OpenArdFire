@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Logging.h>
+#include <FiringModule.h>
 
 void setup() {
     // put your setup code here, to run once:
