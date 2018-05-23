@@ -3,11 +3,11 @@
  * serial ports
  * Created by Storca on 23-05-2018
  * LOGLEVEL
- *  -1 -> No Logging
- *  0  -> Errors
- *  1  -> Warnings
- *  2  -> Info
- *  3  -> Debug
+ *  -1  -> No Logging
+ *   0  -> Errors
+ *   1  -> Warnings
+ *   2  -> Info
+ *   3  -> Debug
  */
 
 #ifndef LOGGING_H
@@ -31,7 +31,7 @@ class Logger{
 
 public:
   Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL);
-
+ 
   void debug(String &msg);
   void info(String &msg);
   void warn(String &msg);
@@ -42,7 +42,7 @@ private:
 
   HardwareSerial* _s;
   SoftwareSerial* _rf;
-  int *_logLevel;
+  int* _logLevel;
 };
 
 #endif
