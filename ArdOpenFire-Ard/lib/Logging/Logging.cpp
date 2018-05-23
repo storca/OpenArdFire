@@ -1,11 +1,22 @@
 #include "Logging.h"
 
+/**
+ * Create a Logger object
+ * @param s        Local arduino serial port
+ * @param rf       LORA serial port
+ * @param logLevel level of logging
+ */
 Logger::Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL)
 {
   this->_logLevel = logLevel;
   this->_s = &s;
   this->_rf = &rf;
 }
+
+/**
+ * Send a debug message
+ * @param msg message to send
+ */
 void Logger::debug(String &msg)
 {
   if(this->_logLevel > 2)
@@ -13,6 +24,11 @@ void Logger::debug(String &msg)
     print(msg, 3);
   }
 }
+
+/**
+ * Send a info message
+ * @param msg message to send
+ */
 void Logger::info(String &msg)
 {
   if(this->_logLevel > 1)
@@ -20,6 +36,11 @@ void Logger::info(String &msg)
     print(msg, 2);
   }
 }
+
+/**
+ * Send a warning message
+ * @param msg message to send
+ */
 void Logger::warn(String &msg)
 {
   if(this->_logLevel > 0)
@@ -27,6 +48,11 @@ void Logger::warn(String &msg)
     print(msg, 1);
   }
 }
+
+/**
+ * Send an error message
+ * @param msg message to send
+ */
 void Logger::error(String &msg)
 {
   if(this->_logLevel > -1)
@@ -34,6 +60,12 @@ void Logger::error(String &msg)
     this->print(msg, 0);
   }
 }
+
+/**
+ * Print a message to the two serial ports
+ * @param msg   message to send
+ * @param level level of the message (debug->3, info->2 etc)
+ */
 void Logger::print(String &msg, int level)
 {
   String buffer = "";
