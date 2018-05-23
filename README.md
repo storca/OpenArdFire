@@ -1,5 +1,5 @@
 # OpenArdFire for Arduino
-![alt text](https://travis-ci.org/storca/OpenArdFire.svg?branch=master)
+[![Build Status](https://travis-ci.org/storca/OpenArdFire.svg?branch=master)](https://travis-ci.org/storca/OpenArdFire)
 
 ## OpenArdFire is a library that makes your Arduino card a Fireworks Firing System !
 
