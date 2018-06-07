@@ -18,6 +18,7 @@ void CommunicationHandler::handler()
     if(character == '\n')
     {
       //processCommand(); to do
+      this->_localSerialMessage = "";
     }
     else
     {
@@ -32,6 +33,7 @@ void CommunicationHandler::handler()
     if(character == '\n')
     {
       //processCommand(); to do
+      this->_rfSerialMessage = "";
     }
     else
     {
