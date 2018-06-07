@@ -21,7 +21,7 @@ void Logger::debug(String &msg)
 {
   if(*(this->_logLevel) > 2)
   {
-    print(msg, 3);
+    this->print(msg, 3);
   }
 }
 
@@ -33,7 +33,7 @@ void Logger::info(String &msg)
 {
   if(*(this->_logLevel) > 1)
   {
-    print(msg, 2);
+    this->print(msg, 2);
   }
 }
 
@@ -45,7 +45,7 @@ void Logger::warn(String &msg)
 {
   if(*(this->_logLevel) > 0)
   {
-    print(msg, 1);
+    this->print(msg, 1);
   }
 }
 
@@ -61,15 +61,34 @@ void Logger::error(String &msg)
   }
 }
 
+void Logger::log(const char *msg, int logLevel, bool logMessageType)
+{
+  this->print(msg, logLevel, logMessageType);
+}
+
 /**
  * Print a message to the two serial ports
  * @param msg   message to send
  * @param level level of the message (debug->3, info->2 etc)
  */
-void Logger::print(String &msg, int level)
+void Logger::print(String &msg, int level, bool logMessageType)
+{
+  this->send(&msg, level, logMessageType);
+}
+void Logger::print(String *msg, int level, bool logMessageType)
+{
+  this->send(msg, level, logMessageType);
+}
+void Logger::print(const char *msg, int level, bool logMessageType)
+{
+  String str = String(msg);
+  this->send(&str, level, logMessageType);
+}
+
+void Logger::send(String *msg, int level, bool logMessageType)
 {
   String buffer = "";
-  if(LOG_LOG_MESSAGE_TYPE)
+  if(LOG_LOG_MESSAGE_TYPE && logMessageType)
   {
     switch (level)
     {
@@ -90,7 +109,7 @@ void Logger::print(String &msg, int level)
       break;
     }
     //Add the message to the buffer
-    buffer += msg;
+    buffer += *msg;
 
     //Print / Send the message
     this->_s->println(buffer);
@@ -102,4 +121,14 @@ void Logger::print(String &msg, int level)
     this->_s->println(buffer);
     this->_rf->println(buffer);
   }
+}
+
+/**
+ * Send an error code
+ * @param code Error code to send
+ */
+void Logger::code(int &code)
+{
+  String strCode = String(code);
+  this->print(strCode, 0, false);
 }

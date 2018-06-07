@@ -13,6 +13,12 @@
 #ifndef LOGGING_H
 #define LOGGING_H
 
+//Log level types
+#define ERR 0
+#define WARN 1
+#define INFO 2
+#define DEBUG 3
+
 //Default level of logging
 #define LOG_LOGLEVEL 0
 //Log message type ? -> Adds a "WARN: " or "ERR: " at the begining of the message
@@ -31,14 +37,22 @@ class Logger{
 
 public:
   Logger(HardwareSerial &s, SoftwareSerial &rf, int logLevel=LOG_LOGLEVEL);
- 
+
   void debug(String &msg);
   void info(String &msg);
   void warn(String &msg);
   void error(String &msg);
 
+  void log(const char *msg, int logLevel, bool logMessageType);
+
+  void code(int &code);
+
 private:
-  void print(String &msg, int level);
+  void print(String &msg, int level, bool logMessageType=LOG_LOG_MESSAGE_TYPE);
+  void print(String *msg, int level, bool logMessageType=LOG_LOG_MESSAGE_TYPE);
+  void print(const char *msg, int level, bool logMessageType=LOG_LOG_MESSAGE_TYPE);
+
+  void send(String *msg, int level, bool logMessageType);
 
   HardwareSerial* _s;
   SoftwareSerial* _rf;
