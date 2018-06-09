@@ -36,7 +36,8 @@ cache:
 install:
     - pip install -U platformio
     - platformio update
-    - platformio lib -g install 1
+    #Library for MCP
+    - platformio lib -g install 334
 
 script:
     - platformio run
