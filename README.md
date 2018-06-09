@@ -5,7 +5,7 @@
 
 ## Here is the structure of the project
 
-![2 possibilities of the firing system](https://github.com/storca/ArdOpenFire/doc/img/pysical.png)
+![2 possibilities of the firing system](https://raw.githubusercontent.com/storca/OpenArdFire/master/doc/img/physical.png)
 
 ### This is the very begining of the project, please do not pay attention to this documentation
 The folowing project is in developpement, no documentation has already been made
