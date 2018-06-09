@@ -43,7 +43,7 @@ public:
   void warn(String &msg);
   void error(String &msg);
 
-  void log(const char *msg, int logLevel, bool logMessageType);
+  void log(const char *msg, int logLevel, bool logMessageType=LOG_LOG_MESSAGE_TYPE);
 
   void code(int &code);
 

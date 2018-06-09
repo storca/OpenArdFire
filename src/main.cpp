@@ -2,9 +2,11 @@
 #include <Logging.h>
 #include <FiringModule.h>
 #include <CommunicationHandler.h>
+#include <RemoteBox.h>
 
 void setup() {
     // put your setup code here, to run once:
+    //RemoteBox box(&Wire, 3, 8, 12);
 }
 
 void loop() {
