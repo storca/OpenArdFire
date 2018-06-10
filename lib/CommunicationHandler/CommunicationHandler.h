@@ -5,8 +5,8 @@
 Protocol specifications :
  Without this protocol, the transmitter broadcasts commands to every receiver
  The transmitter can send commands to one specific receiver
- Each receiver has an address / index defined by deviceAddress in class declaration
- The maximum number of devices is defined by CH_MAX_DEVICE_INDEX_LEN
+ Each receiver has an address defined by deviceAddress in class declaration
+ The maximum number of devices is defined by CH_MAX_DEVICE_ADDRESS_LEN
  Each receiver can send messages / commands to the transmitter
  by using a letter as the device address, this letter is 'm'
 
@@ -40,7 +40,7 @@ Protocol specifications :
   Note : The higher the value is, the higher the processing time will be
  */
 
-#define CH_MAX_DEVICE_INDEX_LEN 3
+#define CH_MAX_DEVICE_ADDRESS_LEN 3
 
 #define LOCAL 0
 #define RF 1

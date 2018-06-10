@@ -86,7 +86,7 @@ String CommunicationHandler::extractCommand(String cmd)
     /*
       If this is resptected, then, there is no '/' in the command
       Note : this ommits the last character
-      TO OPTIMISE TO MAKE IT WORK WITH CH_MAX_DEVICE_INDEX_LEN
+      TO OPTIMISE TO MAKE IT WORK WITH CH_MAX_DEVICE_ADDRESS_LEN
      */
     if(i > length)
     {
@@ -126,7 +126,7 @@ int CommunicationHandler::finddeviceAddress(String s)
 
   String buffer = "";
 
-  for(int i=0; (s[i] != '/') && (i < (CH_MAX_DEVICE_INDEX_LEN+1) ); i++)
+  for(int i=0; (s[i] != '/') && (i < (CH_MAX_DEVICE_ADDRESS_LEN+1) ); i++)
   {
     //Add the device index to the buffer
     buffer += s[i];
@@ -134,14 +134,14 @@ int CommunicationHandler::finddeviceAddress(String s)
     //Fix to avoid character or control conversion -> crash
     if(!isDigit(s[i]))
     {
-      this->_log->log("Device index is not a digit", ERR);
+      this->_log->log("Device address is not a digit", ERR);
       return -1;
     }
 
 
-    if(i == CH_MAX_DEVICE_INDEX_LEN)
+    if(i == CH_MAX_DEVICE_ADDRESS_LEN)
     {
-      this->_log->log("No device index specified, assuming 0", DEBUG);
+      this->_log->log("No device address specified, assuming 0", DEBUG);
       return 0;
     }
   }
