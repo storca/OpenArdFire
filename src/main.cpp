@@ -2,7 +2,7 @@
 #include <Logging.h>
 #include <FiringModule.h>
 #include <CommunicationHandler.h>
-
+#include <RFID.h>
 #include <RemoteBox.h>
 
 
