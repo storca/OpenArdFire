@@ -5,7 +5,7 @@
 Protocol specifications :
  Without this protocol, the transmitter broadcasts commands to every receiver
  The transmitter can send commands to one specific receiver
- Each receiver has an address / index defined by deviceIndex in class declaration
+ Each receiver has an address / index defined by deviceAddress in class declaration
  The maximum number of devices is defined by CH_MAX_DEVICE_INDEX_LEN
  Each receiver can send messages / commands to the transmitter
  by using a letter as the device address, this letter is 'm'
@@ -48,7 +48,7 @@ Protocol specifications :
 class CommunicationHandler
 {
 public:
-  CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceIndex);
+  CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceAddress);
 
   void handler();
   ~CommunicationHandler();
@@ -56,7 +56,7 @@ private:
 
   void processCommand(String cmd, int from);
   String extractCommand(String cmd);
-  int findDeviceIndex(String s);
+  int finddeviceAddress(String s);
 
   HardwareSerial *_localSerial;
   SoftwareSerial *_rfSerial;
@@ -66,7 +66,7 @@ private:
 
   Logger *_log;
 
-  unsigned int _deviceIndex;
+  unsigned int _deviceAddress;
 };
 
 #endif

@@ -1,13 +1,13 @@
 #include "CommunicationHandler.h"
 
-CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceIndex)
+CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceAddress)
 {
   this->_localSerial = s;
   this->_rfSerial = rf;
 
   this->_log = log;
 
-  this->_deviceIndex = deviceIndex;
+  this->_deviceAddress = deviceAddress;
 }
 /**
  * Handles serial communications, call this function in loop
@@ -56,7 +56,7 @@ void CommunicationHandler::processCommand(String cmd, int from)
   }
   else
   {
-    if(this->findDeviceIndex(cmd) == int(this->_deviceIndex))
+    if(this->finddeviceAddress(cmd) == int(this->_deviceAddress))
     {
       /*
       The message is for us !
@@ -105,7 +105,7 @@ String CommunicationHandler::extractCommand(String cmd)
   return buffer;
 }
 
-int CommunicationHandler::findDeviceIndex(String s)
+int CommunicationHandler::finddeviceAddress(String s)
 {
   /*
   Command form : <device_index>/<command>
