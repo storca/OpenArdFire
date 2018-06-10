@@ -1,6 +1,8 @@
 #ifndef FIRINGMODULE_H
 #define FIRINGMODULE_H
 
+
+
 //Number of securities used by the firing module
 #define FM_NB_SECURITIES 3
 
