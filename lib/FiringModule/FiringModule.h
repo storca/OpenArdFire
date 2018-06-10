@@ -1,7 +1,13 @@
 #ifndef FIRINGMODULE_H
 #define FIRINGMODULE_H
 
-
+/*
+This library manages securities, cues and coordinates communication with actions
+  It's the ♥ of our firing system :)
+  It can be run in two modes : (not done yet, looking into re-organising library)
+      - With RemoteBoxes : it works with remote boxes
+      - With ArduinoCues : it works with arduino cues only (for simple systems)
+ */
 
 //Number of securities used by the firing module
 #define FM_NB_SECURITIES 3
