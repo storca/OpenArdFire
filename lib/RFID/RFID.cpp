@@ -13,6 +13,12 @@ void RFID::addTags(long tags[])
   this->_tags = tags;
   this->_numberOfTags = sizeof(*this->_tags) / sizeof(long);
 }
+/**
+ * /!\ FIX ME /!\
+ * MAY NOT WORK BECAUSE _rfid->read() RETURNS THE LAST READ tag
+ * So it causes an true condition and inverts _rfidState every time
+ * handler() is called
+ */
 void RFID::handler()
 {
   long last_id;

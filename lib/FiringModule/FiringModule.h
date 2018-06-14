@@ -18,7 +18,7 @@ This library manages securities, cues and coordinates communication with actions
 class FiringModule
 {
 public:
-  FiringModule(unsigned int &cues, unsigned int &testPins, Logger &log, bool testPinState=LOW);
+  FiringModule(unsigned int &testPins, Logger &log, bool testPinState=LOW);
   ~FiringModule();
 
   //Securities
@@ -33,7 +33,6 @@ public:
   bool ignite(int cue, int duration=500);
 
 private:
-  unsigned int *_cuePins;
   unsigned int *_testPin;
   unsigned int *_analogTestPin;
   //State to set to enable test relays

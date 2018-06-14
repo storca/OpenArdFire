@@ -1,8 +1,7 @@
 #include "FiringModule.h"
 
-FiringModule::FiringModule(unsigned int &cues, unsigned int &testPin, Logger &log, bool testPinState)
+FiringModule::FiringModule(unsigned int &testPin, Logger &log, bool testPinState)
 {
-  this->_cuePins = &cues;
   this->_logger = &log;
   this->_testPin = &testPin;
 
@@ -64,9 +63,7 @@ bool FiringModule::test(int cue, int analogLimit)
   //Enabling test relay
   digitalWrite(*this->_testPin, LOW);
 
-  digitalWrite(this->_cuePins[cue], this->_testPinState);
-  int result = analogRead(*this->_analogTestPin);
-  digitalWrite(this->_cuePins[cue], !this->_testPinState);
+  //Cues.h implementation here
 
   //Disabling test relays
   digitalWrite(*this->_testPin, HIGH);
@@ -94,9 +91,8 @@ bool FiringModule::ignite(int cue, int duration)
 {
   if(this->isSafe())
   {
-      digitalWrite(this->_cuePins[cue], this->_testPinState);
-      delay(duration);
-      digitalWrite(this->_cuePins[cue], !this->_testPinState);
+      //Cues.h implementation here
+
       return true;
   }
   else
