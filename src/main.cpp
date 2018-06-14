@@ -4,6 +4,7 @@
 #include <CommunicationHandler.h>
 #include <RFID.h>
 #include <RemoteBox.h>
+#include <Cues.h>
 
 
 void setup() {
