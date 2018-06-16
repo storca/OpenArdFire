@@ -2,7 +2,14 @@
  * @file    RDM6300.h
  * @author  Arliones Hoeller Jr.
  * @license MIT (see LICENSE)
- * 
+ *
+ */
+
+/*
+NOTE FOR OPENARDFIRE PROJECT :
+  This library was not available on platformio, this is why I had to 
+  include it there
+  Official git repo : https://github.com/arliones/RDM6300-Arduino
  */
 
 #ifndef __RDM6300_H__
@@ -91,12 +98,12 @@ private:
   bool parse(char d)
   {
     static int state = 0;
-  
+
     unsigned long long val = 0;
     unsigned long long desl = 0;
-  
+
     _id_is_valid = false;
-  
+
     switch(state) {
     case 0:
       if(d == 0x02) {
@@ -129,7 +136,7 @@ private:
       state++;
       break;
     }
-  
+
     return _id_is_valid;
   }
 
@@ -140,4 +147,3 @@ private:
 };
 
 #endif /* __RDM6300_H__ */
-
