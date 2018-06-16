@@ -6,14 +6,14 @@ This library handles every single cue wait time without pausing with delay()
  */
 
 #include <Arduino.h>
+#include <Adafruit_MCP23017.h>
 
 class Cues
 {
 public:
-  Cues(void (*set)(int, bool), unsigned int *cues, size_t nbOfCues);
+  Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues);
 
   void handler();
-  void set(int cue, bool value);
 
   ~Cues();
 
@@ -29,7 +29,10 @@ private:
   //How much time the cues are on
   unsigned int _onTime = 500;
 
-  void (*_set)(int, bool);
+  Adafruit_MCP23017 *_mcp;
+
+  void set(int cue, bool value);
+
 };
 
 #endif //CUES_H

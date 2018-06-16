@@ -5,13 +5,11 @@
  * @param cues      cues pins assignements as a pointer
  * @param nbOfCues  The nb of elements in 'cues' array
  */
-Cues::Cues(void (*set)(int, bool), unsigned int *cues, size_t nbOfCues)
+Cues::Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues)
 {
   this->_cuePins = cues;
-  this->_cues = new long[nbOfCues];
+  this->_cues = new unsigned long[nbOfCues];
 
-  //Dont know if it works to pass a function like that
-  this->_set = set;
 }
 
 /**
@@ -25,14 +23,15 @@ void Cues::handler()
     unsigned long time = millis();
     if((this->_cues[i]) >= time)
     {
-      //i + 1 -> to get the 'real' cue
+      //i + 1 -> to get the 'real' cue number > 0
       this->set(i + 1, LOW);
       this->_cues[i] = 0;
     }
   }
 }
 /**
- * Set any cue a given value
+ * Set any cue number a given value eg cue nb 21
+ * This takes cue numbers not pins
  * @param cue   Cue number, > 0
  * @param value HIGH or LOW (LOW is set automaticly via handler)
  */
@@ -44,12 +43,12 @@ void Cues::set(int cue, bool value)
     this->_cues[cue - 1] = millis() + this->_onTime;
 
     //Actualy set the cue to HIGH
-    this->_set(this->_cuePins[cue - 1], HIGH);
+    this->_mcp->digitalWrite(this->_cuePins[cue - 1], HIGH);
   }
   else if(value == LOW)
   {
     //Actualy set the cue to LOW
-    this->_set(this->_cuePins[cue - 1], LOW);
+    this->_mcp->digitalWrite(this->_cuePins[cue - 1], LOW);
   }
 }
 Cues::~Cues()
