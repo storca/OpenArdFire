@@ -26,9 +26,8 @@ public:
 private:
   unsigned int _i2cAddress;
   unsigned int _cuesRange[2];
-  TwoWire *_Wire;
 
-  Adafruit_MCP23017 mcp;
+  Adafruit_MCP23017 _mcp;
 
 };
 

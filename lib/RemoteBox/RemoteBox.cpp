@@ -18,13 +18,13 @@ RemoteBox::RemoteBox(unsigned int address, unsigned int firstCue, unsigned int l
 void RemoteBox::begin()
 {
   //Initialise MCP with it's address
-  this->mcp.begin(this->_i2cAddress);
+  this->_mcp.begin(this->_i2cAddress);
 
   //Setting MCP pins as outputs and are set to low
   for(int cue=0; cue<=15; cue++)
   {
-    this->mcp.pinMode(cue, OUTPUT);
-    this->mcp.digitalWrite(cue, LOW);
+    this->_mcp.pinMode(cue, OUTPUT);
+    this->_mcp.digitalWrite(cue, LOW);
   }
 }
 RemoteBox::~RemoteBox()
