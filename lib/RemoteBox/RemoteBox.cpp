@@ -13,6 +13,11 @@ RemoteBox::RemoteBox(unsigned int address, unsigned int firstCue, unsigned int l
 
   this->_i2cAddress = address;
 
+  if(TWCR)
+  {
+    
+  }
+
 }
 
 void RemoteBox::begin()

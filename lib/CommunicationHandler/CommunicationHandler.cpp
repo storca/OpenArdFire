@@ -15,6 +15,15 @@ CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf
 void CommunicationHandler::handler()
 {
   //Local Serial port
+  this->localSerialHandler();
+
+  //RF Serial port
+  this->rfSerialHandler();
+
+}
+
+void CommunicationHandler::localSerialHandler()
+{
   if(this->_localSerial->available())
   {
     char character = this->_localSerial->read();
@@ -28,8 +37,9 @@ void CommunicationHandler::handler()
       this->_localSerialMessage += character;
     }
   }
-
-  //RF Serial ports
+}
+void CommunicationHandler::rfSerialHandler()
+{
   if(this->_rfSerial->available())
   {
     char character = this->_rfSerial->read();

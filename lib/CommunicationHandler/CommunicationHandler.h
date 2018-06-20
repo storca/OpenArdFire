@@ -54,6 +54,9 @@ public:
   ~CommunicationHandler();
 private:
 
+  void localSerialHandler();
+  void rfSerialHandler();
+  
   void processCommand(String cmd, int from);
   String extractCommand(String cmd);
   int finddeviceAddress(String s);
