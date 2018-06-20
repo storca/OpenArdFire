@@ -16,6 +16,9 @@ tags variable has to be an int[x][14]
 #define RFID_SOFTWARE_SERIAL 0
 #define RFID_HARDWARE_SERIAL 1
 
+//Serial template
+template <typename SerialT>
+
 class RFID
 {
 public:
@@ -30,8 +33,7 @@ public:
   ~RFID();
 
 private:
-  //May not work
-  RDM6300 *_rfid;
+  RDM6300<SerialT> *_rfid;
 
   int _numberOfTags = 0;
 
