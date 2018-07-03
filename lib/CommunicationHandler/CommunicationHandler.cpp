@@ -149,11 +149,25 @@ String CommunicationHandler::getCommand(int from)
   //TODO : Do this extraction in a elegant way
   char *command;
   char *commandQueue;
-  commandQueue = (char*)this->_localProcessQueue.c_str();
+  if(from == Local)
+  {
+    commandQueue = (char*)this->_localProcessQueue.c_str();
+  }
+  else if(from == Radio)
+  {
+    commandQueue = (char*)this->_rfProcessQueue.c_str();
+  }
   //extract command
   command = strtok(commandQueue, "\n");
   //Remove command from queue
-  this->_localProcessQueue.remove(0, String(command).length());
+  if(from == Local)
+  {
+    this->_localProcessQueue.remove(0, String(command).length());
+  }
+  else if(from == Radio)
+  {
+    this->_rfProcessQueue.remove(0, String(command).length());
+  }
   return String(command);
 
 }
