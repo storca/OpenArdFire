@@ -17,7 +17,7 @@ void FiringModule::welcome()
   this->_logger->log("OpenArdFire Developpement Version", INFO, 0);
   this->_logger->log("Test sequence : / abcdefghijklmnopqrstwxyz 0123456789", DEBUG, 0);
   this->_logger->log("Developped by EPAILLY Thomas on 23-05-2018", INFO, 0);
-  this->_logger->log("This module is able to interpret commands, see doc", INFO, 0);
+  this->_logger->log("This module is able to take commands, see doc", INFO, 0);
   this->_logger->log("----------------------------------------------", INFO, 0);
 
 }

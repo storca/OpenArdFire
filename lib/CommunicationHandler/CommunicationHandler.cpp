@@ -15,12 +15,22 @@ CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf
 void CommunicationHandler::handler()
 {
   //Local Serial port
+  this->localSerialHandler();
+
+  //RF Serial port
+  this->rfSerialHandler();
+
+}
+
+void CommunicationHandler::localSerialHandler()
+{
+  //Read from serial
   if(this->_localSerial->available())
   {
     char character = this->_localSerial->read();
-    if(character == '\n')
+    if(character == CH_ENDL_CHAR)
     {
-      this->processCommand(this->_localSerialMessage, LOCAL);
+      this->processCommand(this->_localSerialMessage, Local);
       this->_localSerialMessage = "";
     }
     else
@@ -28,14 +38,22 @@ void CommunicationHandler::handler()
       this->_localSerialMessage += character;
     }
   }
-
-  //RF Serial ports
+  //Write to Serial
+  if(needSend(&this->_localSerialBuffer) && !this->_localSerial->available())
+  {
+    this->_rfSerial->print(this->_localSerialBuffer);
+    this->_localSerialBuffer = "";
+  }
+}
+void CommunicationHandler::rfSerialHandler()
+{
+  //Read and process from serial
   if(this->_rfSerial->available())
   {
     char character = this->_rfSerial->read();
-    if(character == '\n')
+    if(character == CH_ENDL_CHAR)
     {
-      this->processCommand(this->_rfSerialMessage, RF);
+      this->processCommand(this->_rfSerialMessage, Radio);
       this->_rfSerialMessage = "";
     }
     else
@@ -43,116 +61,157 @@ void CommunicationHandler::handler()
       this->_rfSerialMessage += character;
     }
   }
-}
-
-void CommunicationHandler::processCommand(String cmd, int from)
-{
-  if(cmd[0] == 'm' && cmd[1] == '/')
+  //Send messages
+  //NOTE : Avoid sending messages while receiving, might not work
+  if(needSend(&this->_rfSerialBuffer) && !this->_rfSerial->available())
   {
-    /*
-    This is a simple message to the transmitter
-    So we do nothing
-     */
+    //print the buffer
+    //TODO : Check buffer len before sending
+    //TODO : Add destination address
+    this->_rfSerial->print(this->_rfSerialBuffer);
+    //empty buffer
+    this->_rfSerialBuffer = "";
   }
-  else
-  {
-    if(this->finddeviceAddress(cmd) == int(this->_deviceAddress))
-    {
-      /*
-      The message is for us !
-       */
 
-    }
-  }
 }
-
-
 /**
- * Extract a command from a String
- * @param  cmd command eg "1154/do something" or "do something"
- * @return     extracted command eg "do something"
+ * Send error code to specified Serial
+ * @param errorCode error code
+ * @param to        destination : Local, Radio, Both
  */
-String CommunicationHandler::extractCommand(String cmd)
+void CommunicationHandler::print(int errorCode, int to)
+{
+ switch (to) {
+   case Local:
+    this->_localSerialBuffer + String(errorCode) + CH_ENDL_CHAR;
+   break;
+   case Radio:
+    this->_rfSerialBuffer + String(errorCode) + CH_ENDL_CHAR;
+   break;
+   case Both:
+    this->_localSerialBuffer + String(errorCode) + CH_ENDL_CHAR;
+    this->_rfSerialBuffer + String(errorCode) + CH_ENDL_CHAR;
+   break;
+ }
+}
+/**
+ * Print a message to specified serial
+ * @param msg message to send
+ * @param to  destination : Local, Radio, Both
+ */
+void CommunicationHandler::print(const char *msg, int to)
+{
+  switch (to) {
+    case Local:
+      this->_localSerialBuffer + *msg;
+    break;
+    case Radio:
+      this->_rfSerialBuffer + *msg;
+    break;
+    case Both:
+      this->_localSerialBuffer + *msg;
+      this->_rfSerialBuffer + *msg;
+    break;
+  }
+}
+/**
+ * Checks if a buffer is empty
+ * @param  buffer buffer as a pointer
+ * @return        true if not empty
+ */
+bool CommunicationHandler::needSend(String *buffer)
+{
+  if(*buffer != "")
+  {
+    return true;
+  }
+  return false;
+}
+CommunicationHandler::~CommunicationHandler()
+{
+
+}
+
+/*
+Message Class
+ */
+/**
+ * New message object
+ * @param msg Message to process
+ */
+Message::Message(String msg)
+{
+  _message = new message;
+  _msgToProcess = msg;
+  process();
+}
+/**
+ * Set message to process
+ * @param msg Message to process
+ */
+void Message::setMessage(String msg)
+{
+  _msgToProcess = msg;
+  process();
+}
+/**
+ * Get message that has been processed
+ * @return Message that has been processed
+ */
+String Message::getMessage()
+{
+  return _msgToProcess;
+}
+/**
+ * Process the given message
+ * @param maxMsgLen Max message length
+ */
+void Message::process(int maxMsgLen)
 {
   int i = 0;
-
-  int length = cmd.length();
-
-  //Skipping the numbers
-  while(cmd[i] != '/')
+  while(_msgToProcess[i] != '/')
   {
+    //Add character to from
+    _message->from += _msgToProcess[i];
     i++;
 
-    /*
-      If this is resptected, then, there is no '/' in the command
-      Note : this ommits the last character
-      TO OPTIMISE TO MAKE IT WORK WITH CH_MAX_DEVICE_ADDRESS_LEN
-     */
-    if(i > length)
+    if(i >= maxMsgLen)
     {
-      return cmd;
+      _message->from = "\0";
+      return;
     }
   }
 
   //Skip the '/' character
   i++;
 
-  String buffer;
-  for(int k=i; k<=length; k++)
+  while(_msgToProcess[i] != ':')
   {
-    buffer += cmd[k];
-  }
-  return buffer;
-}
+    _message->to += _msgToProcess[i];
+    i++;
 
-int CommunicationHandler::finddeviceAddress(String s)
-{
-  /*
-  Command form : <device_index>/<command>
-  if device_index is 'm' then no receiver should interpret it
-  if the command is like this : "do something", then it will return 0 as a device index
-   */
-
-   if(s[0] == '/')
-   {
-     //Avoid crash due to toInt() conversion with a letter
-     if(s[1] == 'm')
-     {
-       return -1;
-     }
-     return 0;
-   }
-
-
-  String buffer = "";
-
-  for(int i=0; (s[i] != '/') && (i < (CH_MAX_DEVICE_ADDRESS_LEN+1) ); i++)
-  {
-    //Add the device index to the buffer
-    buffer += s[i];
-
-    //Fix to avoid character or control conversion -> crash
-    if(!isDigit(s[i]))
+    if(i >= maxMsgLen)
     {
-      this->_log->log("Device address is not a digit", ERR);
-      return -1;
-    }
-
-
-    if(i == CH_MAX_DEVICE_ADDRESS_LEN)
-    {
-      this->_log->log("No device address specified, assuming 0", DEBUG);
-      return 0;
+      _message->to = "\0";
+      return;
     }
   }
 
-  //Convert and return device index
-  return buffer.toInt();
+  //Skip the ':' character
+  i++;
 
-
+  //Rest of the string is the command
+  while(_msgToProcess[i] != '\0')
+  {
+    _message->command += _msgToProcess[i];
+    if(i >= maxMsgLen)
+    {
+      //message too long
+      return;
+    }
+  }
 }
-
-CommunicationHandler::~CommunicationHandler()
+Message::~Message()
 {
-
+  delete _message;
 }
