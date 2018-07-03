@@ -77,6 +77,7 @@ private:
 
 class CommunicationHandler
 {
+  //TODO : RTS and CTS messages to avoid data collision
 public:
   CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, unsigned int deviceAddress);
 
