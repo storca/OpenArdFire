@@ -38,6 +38,8 @@ install:
     - platformio update
     #Library for MCP
     - platformio lib -g install 334
+    #EEPROMEx
+    - platformio lib -g install 170
 
 script:
     - platformio run

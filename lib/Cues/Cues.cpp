@@ -8,7 +8,6 @@
 Cues::Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues)
 {
   this->_cuePins = cues;
-  this->_cues = new unsigned long[nbOfCues];
 
 }
 
@@ -17,6 +16,8 @@ Cues::Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues)
  */
 void Cues::handler()
 {
+  //TODO : This is a duplicate of Show.h
+  //TODO : Need fix
   size_t arrSize = sizeof(*this->_cues)/sizeof(long);
   for(size_t i=0; i<=arrSize; i++)
   {

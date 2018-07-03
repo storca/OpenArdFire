@@ -3,6 +3,7 @@
 
 /*
 This library handles every single cue wait time without pausing with delay()
+It handles only one set of cues (1 mcp)
  */
 
 #include <Arduino.h>
@@ -22,9 +23,6 @@ private:
 
   //Cue pins
   unsigned int *_cuePins;
-
-  //This variable keeps the time when the cue is supposed to set itself to low
-  unsigned long *_cues;
 
   //How much time the cues are on
   unsigned int _onTime = 500;
