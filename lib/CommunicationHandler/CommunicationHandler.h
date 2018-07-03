@@ -50,14 +50,41 @@ Protocol specifications :
 //Used for messages provenance in processCommand
 enum {Local, Radio, Both};
 
+//Class used to decode and address messages
+//The processing is a bit heavy, this is why I created a separated class
+class Message
+{
+public:
+  struct message
+  {
+    String from;
+    String to;
+    String command;
+  };
+  struct message *msg;
+
+  Message();
+  void setMessage(String msg);
+  String getMessage();
+  ~Message();
+
+private:
+  //Struct to store messages
+  void process(int maxMsgLen = CH_MAX_MESSAGE_LEN);
+  String _msgToProcess;
+
+};
+
 class CommunicationHandler
 {
 public:
-  CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceAddress);
+  CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, unsigned int deviceAddress);
 
   void handler();
   void print(int errorCode, int to);
   void print(const char *msg, int to);
+
+  String getCommand(int from);
 
   ~CommunicationHandler();
 private:
@@ -67,9 +94,7 @@ private:
 
   bool needSend(String *buffer);
 
-  void processCommand(String cmd, int from);
-  String extractCommand(String cmd);
-  int finddeviceAddress(String s);
+  void processMessage(String message, int from);
 
   HardwareSerial *_localSerial;
   SoftwareSerial *_rfSerial;
@@ -80,32 +105,13 @@ private:
   String _localSerialBuffer = "";
   String _rfSerialBuffer = "";
 
-  Logger *_log;
+  String _localProcessQueue = "";
+  String _rfProcessQueue = "";
+
+  Message *_messageHandler;
 
   unsigned int _deviceAddress;
 };
 
-//Class used to process messages
-class Message
-{
-public:
-  struct message
-  {
-    String from;
-    String to;
-    String command;
-  };
 
-  Message(String msg);
-  void setMessage(String msg);
-  String getMessage();
-  ~Message();
-
-private:
-  //Struct to store messages
-  void process(int maxMsgLen = CH_MAX_MESSAGE_LEN);
-  struct message *_message;
-  String _msgToProcess;
-
-};
 #endif

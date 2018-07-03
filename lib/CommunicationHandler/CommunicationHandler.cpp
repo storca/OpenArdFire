@@ -1,12 +1,10 @@
 #include "CommunicationHandler.h"
 
-CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, Logger *log, unsigned int deviceAddress)
+CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, unsigned int deviceAddress)
 {
   this->_localSerial = s;
   this->_rfSerial = rf;
-
-  this->_log = log;
-
+  this->_messageHandler = new Message();
   this->_deviceAddress = deviceAddress;
 }
 /**
@@ -30,7 +28,8 @@ void CommunicationHandler::localSerialHandler()
     char character = this->_localSerial->read();
     if(character == CH_ENDL_CHAR)
     {
-      this->processCommand(this->_localSerialMessage, Local);
+      this->_localSerialMessage += '\n';
+      this->processMessage(this->_localSerialMessage, Local);
       this->_localSerialMessage = "";
     }
     else
@@ -53,7 +52,8 @@ void CommunicationHandler::rfSerialHandler()
     char character = this->_rfSerial->read();
     if(character == CH_ENDL_CHAR)
     {
-      this->processCommand(this->_rfSerialMessage, Radio);
+      this->_rfSerialMessage += '\n';
+      this->processMessage(this->_rfSerialMessage, Radio);
       this->_rfSerialMessage = "";
     }
     else
@@ -127,9 +127,39 @@ bool CommunicationHandler::needSend(String *buffer)
   }
   return false;
 }
+void CommunicationHandler::processMessage(String message, int from)
+{
+  _messageHandler->setMessage(message);
+  if(_messageHandler->msg->from = "m")
+  {
+    if(_messageHandler->msg->to.toInt() == _deviceAddress || _messageHandler->msg->to == "a")
+    {
+      switch (from) {
+        case Local:
+          _localProcessQueue + _messageHandler->msg->command;
+        case Radio:
+          _rfProcessQueue + _messageHandler->msg->command;
+      }
+    }
+  }
+}
+
+String CommunicationHandler::getCommand(int from)
+{
+  //TODO : Do this extraction in a elegant way
+  char *command;
+  char *commandQueue;
+  commandQueue = (char*)this->_localProcessQueue.c_str();
+  //extract command
+  command = strtok(commandQueue, "\n");
+  //Remove command from queue
+  this->_localProcessQueue.remove(0, String(command).length());
+  return String(command);
+
+}
 CommunicationHandler::~CommunicationHandler()
 {
-
+  delete _messageHandler;
 }
 
 /*
@@ -139,11 +169,9 @@ Message Class
  * New message object
  * @param msg Message to process
  */
-Message::Message(String msg)
+Message::Message()
 {
-  _message = new message;
-  _msgToProcess = msg;
-  process();
+  msg = new message;
 }
 /**
  * Set message to process
@@ -172,12 +200,12 @@ void Message::process(int maxMsgLen)
   while(_msgToProcess[i] != '/')
   {
     //Add character to from
-    _message->from += _msgToProcess[i];
+    msg->from += _msgToProcess[i];
     i++;
 
     if(i >= maxMsgLen)
     {
-      _message->from = "\0";
+      msg->from = "\0";
       return;
     }
   }
@@ -187,12 +215,12 @@ void Message::process(int maxMsgLen)
 
   while(_msgToProcess[i] != ':')
   {
-    _message->to += _msgToProcess[i];
+    msg->to += _msgToProcess[i];
     i++;
 
     if(i >= maxMsgLen)
     {
-      _message->to = "\0";
+      msg->to = "\0";
       return;
     }
   }
@@ -203,7 +231,7 @@ void Message::process(int maxMsgLen)
   //Rest of the string is the command
   while(_msgToProcess[i] != '\0')
   {
-    _message->command += _msgToProcess[i];
+    msg->command += _msgToProcess[i];
     if(i >= maxMsgLen)
     {
       //message too long
@@ -213,5 +241,5 @@ void Message::process(int maxMsgLen)
 }
 Message::~Message()
 {
-  delete _message;
+  delete msg;
 }
