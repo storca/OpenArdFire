@@ -1,6 +1,7 @@
 /*
     NOTE: This library is very useless in my case because strings take too much
-    memory, so they've been replaced by error codes
+    memory, so they've been replaced by error codes ; fun fact : this is the
+    first thing I've coded on this project
     I just leave it here in case anyone needs it :)
  */
 
