@@ -1,3 +1,9 @@
+/*
+    NOTE: This library is very useless in my case because strings take too much
+    memory, so they've been replaced by error codes
+    I just leave it here in case anyone needs it :)
+ */
+
 /**
  * Logging.h ; A library that handles logging on arduino with two
  * serial ports
