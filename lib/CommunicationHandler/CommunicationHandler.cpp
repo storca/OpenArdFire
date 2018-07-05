@@ -4,8 +4,8 @@ CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf
 {
   this->_localSerial = s;
   this->_rfSerial = rf;
-  this->_messageHandler = new Message();
   this->_deviceAddress = deviceAddress;
+  this->_messageHandler = new Message(&this->_deviceAddress);
 }
 /**
  * Handles serial communications, call this function in loop
@@ -19,7 +19,9 @@ void CommunicationHandler::handler()
   this->rfSerialHandler();
 
 }
-
+/**
+ * Handles local serial communication
+ */
 void CommunicationHandler::localSerialHandler()
 {
   //Read from serial
@@ -40,10 +42,14 @@ void CommunicationHandler::localSerialHandler()
   //Write to Serial
   if(needSend(&this->_localSerialBuffer) && !this->_localSerial->available())
   {
+    //No need to encode messages here
     this->_rfSerial->print(this->_localSerialBuffer);
     this->_localSerialBuffer = "";
   }
 }
+/**
+ * Handles RF serial communication
+ */
 void CommunicationHandler::rfSerialHandler()
 {
   //Read and process from serial
@@ -67,10 +73,9 @@ void CommunicationHandler::rfSerialHandler()
   {
     //print the buffer
     //TODO : Check buffer len before sending
-    //TODO : Add destination address
-    this->_rfSerial->print(this->_rfSerialBuffer);
-    //empty buffer
-    this->_rfSerialBuffer = "";
+    //Encode message before sending
+    this->_rfSerial->print(processSend(&_rfSerialBuffer));
+    //No need to empty buffer here as soon as the command are deleted one by one when they are sended
   }
 
 }
@@ -127,10 +132,15 @@ bool CommunicationHandler::needSend(String *buffer)
   }
   return false;
 }
+/**
+ * Process a message when received
+ * @param message Message to process
+ * @param from    What serial
+ */
 void CommunicationHandler::processMessage(String message, int from)
 {
   _messageHandler->setMessage(message);
-  if(_messageHandler->msg->from = "m")
+  if(_messageHandler->msg->from = "m" && isAddressInt(_messageHandler->msg->to))
   {
     if(_messageHandler->msg->to.toInt() == _deviceAddress || _messageHandler->msg->to == "a")
     {
@@ -143,33 +153,79 @@ void CommunicationHandler::processMessage(String message, int from)
     }
   }
 }
+/**
+ * Returns the a single command from the buffer
+ * @param  from Local or Radio
+ * @return      A command with it's arguments with \n at the end
+ */
+String CommunicationHandler::getCommand(String *commandQueue)
+{
+  //Function tested and fully working
+  //The return result
+  String command;
 
+  int i = 0;
+  while((*commandQueue)[i] != '\n')
+  {
+    i++;
+  }
+  //Skip the character \n
+  i++;
+
+  command = commandQueue->substring(0, i);
+  commandQueue->remove(0, i);
+  return command;
+}
+/**
+ * Get a command from a device
+ * @param  from Local or Radio
+ * @return      A command from a device (unencoded)
+ */
 String CommunicationHandler::getCommand(int from)
 {
-  //TODO : Do this extraction in a elegant way
-  char *command;
-  char *commandQueue;
-  if(from == Local)
-  {
-    commandQueue = (char*)this->_localProcessQueue.c_str();
+  switch (from) {
+    case Local:
+      return getCommand(&this->_localProcessQueue);
+    break;
+    case Radio:
+      return getCommand(&this->_rfProcessQueue);
+    break;
   }
-  else if(from == Radio)
-  {
-    commandQueue = (char*)this->_rfProcessQueue.c_str();
-  }
-  //extract command
-  command = strtok(commandQueue, "\n");
-  //Remove command from queue
-  if(from == Local)
-  {
-    this->_localProcessQueue.remove(0, String(command).length());
-  }
-  else if(from == Radio)
-  {
-    this->_rfProcessQueue.remove(0, String(command).length());
-  }
-  return String(command);
+}
+/**
+ * Encodes and return a single command from a queue
+ * @param  queue Queue to process
+ * @return       Encoded command from cue
+ */
+String CommunicationHandler::processSend(String *queue)
+{
+  Message *msg;
+  String command = getCommand(queue);
 
+  msg = new Message(&_deviceAddress);
+  msg->setMessage(command);
+
+  return msg->encodeMessage(command, msg->msg->to);
+}
+
+/**
+ * Checks wether an address is an int or not
+ * @param  address Address to be checked
+ * @return         true if address is an int
+ */
+bool CommunicationHandler::isAddressInt(String address)
+{
+  //Tested and working
+  unsigned int i = 0;
+  while(i <= address.length())
+  {
+    if(!isDigit(address[i]) && !address[i] == '\0')
+    {
+      return false;
+    }
+    i++;
+  }
+  return true;
 }
 CommunicationHandler::~CommunicationHandler()
 {
@@ -183,8 +239,9 @@ Message Class
  * New message object
  * @param msg Message to process
  */
-Message::Message()
+Message::Message(unsigned int *deviceAddress)
 {
+  _deviceAddress = deviceAddress;
   msg = new message;
 }
 /**
@@ -203,6 +260,31 @@ void Message::setMessage(String msg)
 String Message::getMessage()
 {
   return _msgToProcess;
+}
+/**
+ * Encode a message with the protocol
+ * @param  command  Command to send with its arguments
+ * @param  receiver Receiver address
+ * @return          Encoded message
+ */
+String Message::encodeMessage(String command, String receiver)
+{
+  String result = "";
+
+  //Add our sender address
+  result + String(*_deviceAddress);
+  //Add separation char
+  result += '/';
+  //Add receiver address
+  result + receiver;
+  //Add separation char
+  result += ':';
+  //Add command
+  result + command;
+  //Add endline char
+  result += '\n';
+
+  return result;
 }
 /**
  * Process the given message

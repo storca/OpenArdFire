@@ -63,15 +63,17 @@ public:
   };
   struct message *msg;
 
-  Message();
+  Message(unsigned int *deviceAddress);
   void setMessage(String msg);
   String getMessage();
+  String encodeMessage(String command, String receiver);
   ~Message();
 
 private:
   //Struct to store messages
   void process(int maxMsgLen = CH_MAX_MESSAGE_LEN);
   String _msgToProcess;
+  unsigned int *_deviceAddress = nullptr;
 
 };
 
@@ -90,22 +92,30 @@ public:
   ~CommunicationHandler();
 private:
 
+  bool isAddressInt(String address);
+
   void localSerialHandler();
   void rfSerialHandler();
 
+  String processSend(String *queue);
   bool needSend(String *buffer);
+
+  String getCommand(String *commandQueue);
 
   void processMessage(String message, int from);
 
   HardwareSerial *_localSerial;
   SoftwareSerial *_rfSerial;
 
+  //Raw received data from serial ports
   String _localSerialMessage = "";
   String _rfSerialMessage = "";
 
+  //Data that is waiting to be sended
   String _localSerialBuffer = "";
   String _rfSerialBuffer = "";
 
+  //Received messages to process
   String _localProcessQueue = "";
   String _rfProcessQueue = "";
 
