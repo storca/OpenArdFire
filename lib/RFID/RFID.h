@@ -3,43 +3,41 @@
 
 /*
 This library handles RFID identification for FiringModule
-tags variable has to be an int[x][14]
+tags variable has to be an unsigned long long (or unsigned int_64)
  */
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <RDM6300.h>
 #include <Logging.h>
+#include <FiringModule.h>
 
 #define RFID_MAX_TAGS 3
 
-#define RFID_SOFTWARE_SERIAL 0
-#define RFID_HARDWARE_SERIAL 1
-
-//Serial template
-template <typename SerialT>
 
 class RFID
 {
 public:
-  RFID(HardwareSerial *rfid);
-  RFID(SoftwareSerial *rfid);
+  RFID(SoftwareSerial *rfid, FiringModule *fm);
 
-  void addTags(int *tags[14]);
-  void addTags(int tags[][14]);
+  void addTags(unsigned long long *tags);
+  void addTag(unsigned long long *tag);
+
+  bool valid();
 
   void handler();
 
   ~RFID();
 
 private:
-  RDM6300<SerialT> *_rfid;
+  size_t _numberOfTags = 0;
 
-  int _numberOfTags = 0;
+  RDM6300<SoftwareSerial> *_rfid;
+  FiringModule *_fm;
 
   bool _rfidState = false;
 
-  long *_tags;
+  unsigned long long *_tags;
 };
 
 #endif

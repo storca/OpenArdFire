@@ -1,37 +1,62 @@
 #include "RFID.h"
 
-RFID::RFID(SoftwareSerial *rfid)
-{
-  this->_rfid = new RDM6300<SoftwareSerial> rdm(rfid);
-}
-RFID::RFID(HardwareSerial *rfid)
-{
-  this->_rfid = new RDM6300<HardwareSerial> rdm(rfid);
-}
-void RFID::addTags(long tags[])
-{
-  this->_tags = tags;
-  this->_numberOfTags = sizeof(*this->_tags) / sizeof(long);
-}
 /**
- * /!\ FIX ME /!\
- * MAY NOT WORK BECAUSE _rfid->read() RETURNS THE LAST READ tag
- * So it causes an true condition and inverts _rfidState every time
- * handler() is called
+ * Create a new RFID handler
+ * @param rfid RFID serial
+ * @param fm   Firing Module
+ */
+RFID::RFID(SoftwareSerial *rfid, FiringModule *fm)
+{
+  this->_rfid = new RDM6300<SoftwareSerial>(rfid);
+}
+
+/**
+ * Handles RFID
  */
 void RFID::handler()
 {
-  long last_id;
+  unsigned long long last_id;
   last_id = this->_rfid->read();
-  for(int i=0; i<=this->_numberOfTags, i++)
+  for(size_t i=0; i<this->_numberOfTags; i++)
   {
     if(last_id == this->_tags[i])
     {
       //Invert RFID state
-      this->_rfidState = !this->_rfidState;
+      this->_rfidState = true;
+    }
+    else
+    {
+      this->_rfidState = false;
+      //TODO : Uncomment when "emit()" ready
+      //_fm->emit(String("invalidtag ") + String(last_id, HEX));
     }
   }
 }
+/**
+ * Add some tags
+ * @param tags tags to add
+ */
+void RFID::addTags(unsigned long long *tags)
+{
+  _tags = tags;
+}
+/**
+ * Add a single tag to the others
+ * @param tag tag to add
+ */
+void RFID::addTag(unsigned long long *tag)
+{
+  unsigned long long *newTags;
+  _numberOfTags = (sizeof(*_tags) / sizeof(unsigned long long)) + 1;
+  newTags = new unsigned long long[_numberOfTags];
+  //TODO : copy _tags in newTags
+  delete _tags;
+  _tags = newTags;
+}
+/**
+ * Checks if the RFID is valid
+ * @return true if valid
+ */
 bool RFID::valid()
 {
   return this->_rfidState;
@@ -39,4 +64,5 @@ bool RFID::valid()
 RFID::~RFID()
 {
   delete this->_rfid;
+  delete _tags;
 }
