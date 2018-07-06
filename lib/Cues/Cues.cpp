@@ -7,6 +7,7 @@ Cues::Cues(uint8_t usableCues)
 {
   _nbOfCues = new const uint8_t(usableCues);
   _cues = new uint32_t[*_nbOfCues];
+  _cueTriggered = new bool[*_nbOfCues];
   init();
 }
 
@@ -30,15 +31,30 @@ void Cues::init()
 }
 
 /**
- * Handles cues sets to LOW
+ * Handles cues sets to LOW and HIGH
  */
 void Cues::handler()
 {
   for(size_t i=0; i<*_nbOfCues; i++)
   {
-    if(_cues[i] > millis())
+    //Example value : 1500
+    //Triggered : false
+    if(millis() > _cues[i] && !_cueTriggered[i])
     {
-      setMcp(i, LOW);
+      setMcp(i+1, HIGH);
+      _cues[i] += _onTime;
+      _cueTriggered[i] = true;
+      //value = 2000
+      //trigered = true
+    }
+    if(millis() > _cues[i] && _cueTriggered[i])
+    {
+      setMcp(i+1, LOW);
+
+      //This avoid calling setMcp(any, LOW) multiple times
+      //Because millis() will not be superior to _cues[i] (50 days lol)
+      //Setting an unsigned long on 32b to -1 is equal to assing it to 4 294 967 295
+      _cues[i] = -1;
     }
   }
 }
@@ -55,6 +71,20 @@ void Cues::set(uint8_t cue, bool value)
   {
     setMcp(cue, value, true);
   }
+}
+/**
+ * Set a cue it's respective trigger time
+ * @param cue  cue to set
+ * @param long trigger time of the cue
+ */
+void Cues::setCue(uint8_t cue, unsigned long triggerTime)
+{
+  if(cue > *_nbOfCues || cue == 0)
+  {
+    return;
+  }
+  _cues[cue-1] = triggerTime;
+  _cueTriggered[cue-1] = false;
 }
 /**
  * Set the state of a cue on the MCP
@@ -101,12 +131,10 @@ void Cues::trigger(uint8_t cue)
     return;
   }
 
-  //Turn the cue on
-  setMcp(cue, HIGH);
-  //Add it to the array
-  //There is a -1 at the begining because cues begins from 1 to any and not 0
-  //There is -1 at the end because of the operator '<' in handler for optimisation
-  _cues[cue-1] = millis() + _onTime - 1;
+  //Set it's trigger time to now, which will be checked in handler()
+  _cues[cue-1] = millis();
+  //Double check
+  _cueTriggered[cue-1] = false;
 }
 /**
  * Get the number of cues
@@ -115,11 +143,6 @@ void Cues::trigger(uint8_t cue)
 const uint8_t* Cues::getNumberOfCues()
 {
   return _nbOfCues;
-}
-Cues::~Cues()
-{
-  delete this->_cues;
-  delete _mcps;
 }
 /**
  * Authorise cue triggering
@@ -137,4 +160,10 @@ void Cues::authorise(bool status)
 bool Cues::authorised()
 {
   return !_security;
+}
+Cues::~Cues()
+{
+  delete _cues;
+  delete _mcps;
+  delete _cueTriggered;
 }

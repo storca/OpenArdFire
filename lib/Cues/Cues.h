@@ -28,6 +28,7 @@ public:
   bool authorised();
   void trigger(uint8_t cue);
   void set(uint8_t pin, bool value);
+  void setCue(uint8_t cue, unsigned long triggerTime);
   const uint8_t* getNumberOfCues();
 
   ~Cues();
@@ -46,6 +47,8 @@ private:
   // This value (t + _onTime) is stored in this array
   // It is a pointer because of the NbOfCues that is variable
   uint32_t *_cues;
+  //Registers if a cue has been already triggered
+  bool *_cueTriggered;
 
   //How much time the cues are on
   unsigned int _onTime = 500;
