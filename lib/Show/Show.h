@@ -2,22 +2,40 @@
 #define SHOW_H
 
 #include <EEPROMEx.h>
+#include <Cues.h>
+
+/*
+Idea of the memory usage of a show :
+ ~4 bytes / cue
+ */
 
 class Show
 {
 public:
-  Show(size_t nbrOfCues);
-  void setStartTime(unsigned long startTime);
-  ~Show();
-  struct Cue
-  {
-    //Highest cue -> 255 (256)
-    byte cue;
-    unsigned long time;
-  };
-private:
-  Cue *_show = nullptr;
+  Show(Cues *cues);
+  //void setStartTime(unsigned long startTime);
 
+  void start();
+  bool running();
+  bool set(uint8_t cue, unsigned long triggerTime);
+  bool save(int address);
+  bool import(int address);
+  void handler();
+  ~Show();
+  
+private:
+  //Cues pointer
+  Cues *_cues = nullptr;
+  //Trigger time for each cue
+  unsigned long *_triggerTime;
+  //Number of triggered cues
+  uint8_t _triggeredCues;
+  //Number of cues
+  const uint8_t *_nbOfCues;
+  //Start time
+  unsigned long _startTime;
+  //Show is running ?
+  bool _running = false;
 };
 
 

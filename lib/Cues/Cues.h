@@ -24,18 +24,21 @@ public:
   Cues(uint8_t usableCues);
 
   void handler();
+  void authorise(bool status);
+  bool authorised();
   void trigger(uint8_t cue);
   void set(uint8_t pin, bool value);
+  const uint8_t* getNumberOfCues();
 
   ~Cues();
 
 
 private:
-  //Cue pins
-  unsigned int *_cuePins;
-
+  //Status of the security
+  //Has to be false to trigger cues
+  bool _security = true;
   //Number of cues max 128
-  uint8_t _nbOfCues;
+  const uint8_t *_nbOfCues;
 
   //Stores cues on time
   // For example : when a cue was turned on at a time t,

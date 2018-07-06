@@ -5,8 +5,8 @@
  */
 Cues::Cues(uint8_t usableCues)
 {
-  _nbOfCues = usableCues;
-  _cues = new uint32_t[_nbOfCues];
+  _nbOfCues = new const uint8_t(usableCues);
+  _cues = new uint32_t[*_nbOfCues];
   init();
 }
 
@@ -34,7 +34,7 @@ void Cues::init()
  */
 void Cues::handler()
 {
-  for(size_t i=0; i<_nbOfCues; i++)
+  for(size_t i=0; i<*_nbOfCues; i++)
   {
     if(_cues[i] > millis())
     {
@@ -51,7 +51,7 @@ void Cues::handler()
  */
 void Cues::set(uint8_t cue, bool value)
 {
-  if(cue > _nbOfCues)
+  if(cue > *_nbOfCues)
   {
     setMcp(cue, value, true);
   }
@@ -65,7 +65,7 @@ void Cues::setMcp(uint8_t cue, bool value, bool notACue)
 {
   //Do not trigger a cue that is higher than the usable cues
   //Trigger othewise if notACue is set to true
-  if(cue > _nbOfCues && !notACue)
+  if(cue > *_nbOfCues && !notACue)
   {
     return;
   }
@@ -96,7 +96,7 @@ void Cues::setMcp(uint8_t cue, bool value, bool notACue)
 void Cues::trigger(uint8_t cue)
 {
   //Do not trigger a cue that is higher than the usable cues
-  if(cue > _nbOfCues)
+  if(cue > *_nbOfCues)
   {
     return;
   }
@@ -108,8 +108,33 @@ void Cues::trigger(uint8_t cue)
   //There is -1 at the end because of the operator '<' in handler for optimisation
   _cues[cue-1] = millis() + _onTime - 1;
 }
+/**
+ * Get the number of cues
+ * @return The number of cues
+ */
+const uint8_t* Cues::getNumberOfCues()
+{
+  return _nbOfCues;
+}
 Cues::~Cues()
 {
   delete this->_cues;
   delete _mcps;
+}
+/**
+ * Authorise cue triggering
+ * @param status autorise = true
+ */
+void Cues::authorise(bool status)
+{
+  //If status == true, security is disabled
+  _security = !status;
+}
+/**
+ * Checks if cue triggering is possible
+ * @return true if possible
+ */
+bool Cues::authorised()
+{
+  return !_security;
 }
