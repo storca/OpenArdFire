@@ -2,6 +2,7 @@
 #define COMMUNICATIONHANDLER_H
 
 /*
+This library handles PC to receiver communications
 Protocol specifications :
  Without this protocol, the transmitter broadcasts commands to every receiver
  The transmitter can send commands to one specific receiver
@@ -19,14 +20,16 @@ Protocol specifications :
     ':' -> after that character is the command
     \n -> endline character
     So any command must look like this :
-    <sender>/<device_address>:<command>
+    <sender>/<receiver>:<command>\n
     What if there is only one device on the network ?
     Syntax must be respected, otherwise, command will be ignored
 
   A message from any receiver to the transmitter must be like this :
     "23/m:i cannot do something\r"
   All devices will receive the message but will ignore it
-  NOTE : all treatment is done by
+  NOTE : receivers are able to receive messages only from 'm'
+  NOTE : receiver address 'a' means all ; so 'm/a:selftest' will be sent
+  to all receivers
  */
 
 #include <Arduino.h>
@@ -84,9 +87,11 @@ public:
   CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf, unsigned int deviceAddress);
 
   void handler();
+  //Input functions
   void print(int errorCode, int to);
   void print(const char *msg, int to);
 
+  //Output function
   String getCommand(int from);
 
   ~CommunicationHandler();

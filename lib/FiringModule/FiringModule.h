@@ -12,6 +12,10 @@ This library manages securities, cues and coordinates communication with actions
 //Number of securities used by the firing module
 #define FM_NB_SECURITIES 3
 
+//What is the pin that triggers the relays
+#define FM_TESTPIN 6
+
+
 #include <Arduino.h>
 #include <Logging.h>
 
@@ -22,7 +26,7 @@ public:
   ~FiringModule();
 
   //Securities
-  void setSecurity(int securityId, bool *state);
+  void setSecurity(int securityId, bool state);
   bool isSafe();
 
   //Test

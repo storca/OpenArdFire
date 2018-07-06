@@ -5,6 +5,7 @@
 #include <Cues.h>
 
 /*
+This library handles cue trigger on an automatic show
 Idea of the memory usage of a show :
  ~4 bytes / cue
  */
@@ -22,7 +23,7 @@ public:
   bool import(int address);
   void handler();
   ~Show();
-  
+
 private:
   //Cues pointer
   Cues *_cues = nullptr;
