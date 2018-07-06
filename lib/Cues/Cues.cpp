@@ -1,14 +1,32 @@
 #include "Cues.h"
 /**
- * Construct a set of Cues
- * @param set       function that turns on cues eg: digitalWrite
- * @param cues      cues pins assignements as a pointer
- * @param nbOfCues  The nb of elements in 'cues' array
+ * New set of cues on the specified MCPs
+ * @param usableCues Number of pins from the MCP that will be used as cues
  */
-Cues::Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues)
+Cues::Cues(uint8_t usableCues)
 {
-  this->_cuePins = cues;
+  _nbOfCues = usableCues;
+  _cues = new uint32_t[_nbOfCues];
+  init();
+}
 
+
+void Cues::init()
+{
+  //Get the bytes from macro
+  byte mcpAddresses[] = C_MCPS;
+
+  //Calculate the number of MCPs
+  _numberOfMcps = sizeof(mcpAddresses) / sizeof(byte);
+  _mcps = new Adafruit_MCP23017[_numberOfMcps];
+
+  for(size_t i=0; i<_numberOfMcps; i++)
+  {
+    //Call constructor
+    _mcps[i] = Adafruit_MCP23017();
+    //Init the mcp with it's I2C address
+    _mcps[i].begin(mcpAddresses[i]);
+  }
 }
 
 /**
@@ -16,43 +34,82 @@ Cues::Cues(Adafruit_MCP23017 *mcp, unsigned int *cues, size_t nbOfCues)
  */
 void Cues::handler()
 {
-  //TODO : This is a duplicate of Show.h
-  //TODO : Need fix
-  size_t arrSize = sizeof(*this->_cues)/sizeof(long);
-  for(size_t i=0; i<=arrSize; i++)
+  for(size_t i=0; i<_nbOfCues; i++)
   {
-    unsigned long time = millis();
-    if((this->_cues[i]) >= time)
+    if(_cues[i] > millis())
     {
-      //i + 1 -> to get the 'real' cue number > 0
-      this->set(i + 1, LOW);
-      this->_cues[i] = 0;
+      setMcp(i, LOW);
     }
   }
 }
 /**
- * Set any cue number a given value eg cue nb 21
+ * Set any cue number greater than _nbOfCues
+ * Does not trigger cues, only pins that are not used
  * This takes cue numbers not pins
- * @param cue   Cue number, > 0
+ * @param cue   Cue number, > _nbOfCues
  * @param value HIGH or LOW (LOW is set automaticly via handler)
  */
-void Cues::set(int cue, bool value)
+void Cues::set(uint8_t cue, bool value)
 {
-  if(value == HIGH)
+  if(cue > _nbOfCues)
   {
-    //Save the time when the cue should be set to LOW
-    this->_cues[cue - 1] = millis() + this->_onTime;
+    setMcp(cue, value, true);
+  }
+}
+/**
+ * Set the state of a cue on the MCP
+ * @param cue   Cue to set
+ * @param value HIGH or LOW
+ */
+void Cues::setMcp(uint8_t cue, bool value, bool notACue)
+{
+  //Do not trigger a cue that is higher than the usable cues
+  //Trigger othewise if notACue is set to true
+  if(cue > _nbOfCues && !notACue)
+  {
+    return;
+  }
 
-    //Actualy set the cue to HIGH
-    this->_mcp->digitalWrite(this->_cuePins[cue - 1], HIGH);
-  }
-  else if(value == LOW)
+  uint8_t mcpToTrigger = 1;
+  while(mcpToTrigger*16 < cue)
   {
-    //Actualy set the cue to LOW
-    this->_mcp->digitalWrite(this->_cuePins[cue - 1], LOW);
+    mcpToTrigger++;
   }
+  //Decrement one to use this to select MCP
+  //Because if cue <= 16, will return 1,
+  //but the actual mpc to trigger is _mcps[0]
+  mcpToTrigger--;
+
+  //Little formula here that returns the pin to trigger on MCP
+  //NOTE : returns from 1 to 16
+  byte pinToTrigger = (16 - ((mcpToTrigger * 16) - cue));
+
+  //NOTE : incomprehension here ? why a '.' and not a '->'
+  //       coz _mcps is a pointer
+  _mcps[mcpToTrigger].digitalWrite(pinToTrigger, value);
+
+}
+/**
+ * Triggers a cue number (from 1 to any)
+ * @param cue Cue number to trigger
+ */
+void Cues::trigger(uint8_t cue)
+{
+  //Do not trigger a cue that is higher than the usable cues
+  if(cue > _nbOfCues)
+  {
+    return;
+  }
+
+  //Turn the cue on
+  setMcp(cue, HIGH);
+  //Add it to the array
+  //There is a -1 at the begining because cues begins from 1 to any and not 0
+  //There is -1 at the end because of the operator '<' in handler for optimisation
+  _cues[cue-1] = millis() + _onTime - 1;
 }
 Cues::~Cues()
 {
   delete this->_cues;
+  delete _mcps;
 }
