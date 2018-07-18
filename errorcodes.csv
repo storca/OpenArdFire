@@ -1,0 +1,3 @@
+errorcode	name	info	description	fix
+300	Securities enabled	Firing system's securities are enabled, show is not able to start	Error thrown by the firing module when a security is still active while performing final module test	Check and disable security / securities
+400	Command not understood	The command received is not valid	This errors occurs when a receiver receives a command that is unknown by the receiver or satelite	Check command syntax, or check message decoding and finaly versions might be incompatible
