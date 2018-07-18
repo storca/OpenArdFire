@@ -115,7 +115,7 @@ def name(errorCode):
     print(getData(errorCode, 'name'))
 
 def info(errorCode):
-    print(getData(errorcode, 'info'))
+    print(getData(errorCode, 'info'))
 
 def fix(errorCode):
     print(getData(errorCode, 'fix'))
@@ -159,6 +159,8 @@ def sortfile(file):
 def processCommand(command, errorcode):
     if command == "add":
         add(errorcode)
+    elif command == "name":
+        name(errorcode)
     elif command == "info":
         info(errorcode)
     elif command == "fix":
