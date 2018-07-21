@@ -158,7 +158,7 @@ void CommunicationHandler::processMessage(String message, int from)
  * @param  from Local or Radio
  * @return      A command with it's arguments with \n at the end
  */
-String CommunicationHandler::getCommand(String *commandQueue)
+String CommunicationHandler::extractCommand(String *commandQueue)
 {
   //Function tested and fully working
   //The return result
@@ -185,10 +185,10 @@ String CommunicationHandler::getCommand(int from)
 {
   switch (from) {
     case Local:
-      return getCommand(&this->_localProcessQueue);
+      return extractCommand(&this->_localProcessQueue);
     break;
     case Radio:
-      return getCommand(&this->_rfProcessQueue);
+      return extractCommand(&this->_rfProcessQueue);
     break;
   }
 }
@@ -200,7 +200,7 @@ String CommunicationHandler::getCommand(int from)
 String CommunicationHandler::processSend(String *queue)
 {
   Message *msg;
-  String command = getCommand(queue);
+  String command = extractCommand(queue);
 
   msg = new Message(&_deviceAddress);
   msg->setMessage(command);

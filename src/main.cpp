@@ -5,6 +5,7 @@
 #include <RFID.h>
 #include <RemoteBox.h>
 #include <Cues.h>
+#include <Radio.h>
 
 
 void setup() {

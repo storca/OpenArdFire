@@ -1,7 +1,13 @@
+#ifndef RADIO_H
+#define RADIO_H
+
 /**
  * This class handles NRF24L01 communications with Mirf library
+ * Address 0 is master (receiver)
+ * Other addresses are sattelites
  */
 
+#include <Arduino.h>
 #include <SPI.h>
 #include <Mirf.h>
 #include <nRF24L01.h>
@@ -13,17 +19,16 @@
 #define RF_ENDMSG_CHAR 4
 
 
-class Radio
-{
+class CRadio{
 public:
-  Radio();
+  CRadio();
   bool begin(uint8_t rfchannel);
   void handler();
   void send(String command, uint8_t receiver);
   String getCommand();
   bool ready();
   bool available();
-  ~Radio();
+  ~CRadio();
 
   //FIXME : has to be a constant
   uint8_t channel;
@@ -35,3 +40,5 @@ private:
   String *_sendBuffer;
   String *_receiveBuffer;
 };
+
+#endif

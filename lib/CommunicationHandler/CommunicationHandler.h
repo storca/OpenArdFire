@@ -35,8 +35,6 @@ Protocol specifications :
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 
-#include <Logging.h>
-
 /*
   Maximum device index length, passed that value, device index will become 0
   eg : if that value equals 3, then, your device index should never exceed 999
@@ -105,7 +103,7 @@ private:
   String processSend(String *queue);
   bool needSend(String *buffer);
 
-  String getCommand(String *commandQueue);
+  String extractCommand(String *commandQueue);
 
   void processMessage(String message, int from);
 

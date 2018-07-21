@@ -2,7 +2,7 @@
 /**
  * Radio Ctor
  */
-Radio::Radio()
+CRadio::CRadio()
 {
   _sendBuffer = new String();
   _receiveBuffer = new String();
@@ -12,7 +12,7 @@ Radio::Radio()
  * @param  rfchannel channel
  * @return           true if success
  */
-bool Radio::begin(uint8_t rfchannel)
+bool CRadio::begin(uint8_t rfchannel)
 {
   if (rfchannel > -1 && rfchannel < 256)
   {
@@ -36,7 +36,7 @@ bool Radio::begin(uint8_t rfchannel)
 /**
  * Handles communications
  */
-void Radio::handler()
+void CRadio::handler()
 {
   if(!Mirf.isSending() && !Mirf.dataReady() && !ready())
   {
@@ -73,7 +73,7 @@ void setReceiveAddress(uint8_t me)
  * Checks if the radio is ready to send
  * @return true if true :p
  */
-bool Radio::ready()
+bool CRadio::ready()
 //Just checks if the buffer is empty
 {
   if(*_sendBuffer == "")
@@ -89,7 +89,7 @@ bool Radio::ready()
  * Process a given packet
  * @param packet packet to process
  */
-void Radio::processPacket(byte packet[RF_PACKET_SIZE])
+void CRadio::processPacket(byte packet[RF_PACKET_SIZE])
 {
   //Add the packet to the receive buffer
   for (size_t i = 0; i < RF_PACKET_SIZE+1; i++) {
@@ -100,7 +100,7 @@ void Radio::processPacket(byte packet[RF_PACKET_SIZE])
  * Checks if radio is able to give commands
  * @return true if true
  */
-bool Radio::available()
+bool CRadio::available()
 {
   if(*_receiveBuffer == "")
     return false;
@@ -111,7 +111,7 @@ bool Radio::available()
  * Get a command from radios
  * @return command
  */
-String Radio::getCommand()
+String CRadio::getCommand()
 {
   size_t i = 0;
   String command;
@@ -120,6 +120,9 @@ String Radio::getCommand()
     command += char(_receiveBuffer->charAt(i));
     if(i > 255)
     {
+      //Remove the command that is too long
+      //Will not be understood by firing modules
+      _receiveBuffer->remove(0, i);
       return String("");
     }
     i++;
@@ -134,7 +137,7 @@ String Radio::getCommand()
  * @param command  command to send
  * @param receiver receiver's address
  */
-void Radio::send(String command, uint8_t receiver)
+void CRadio::send(String command, uint8_t receiver)
 {
   if(!ready())
     return;
@@ -147,7 +150,7 @@ void Radio::send(String command, uint8_t receiver)
 /**
  * Radio Dtor
  */
-Radio::~Radio()
+CRadio::~CRadio()
 {
   delete _sendBuffer;
   delete _receiveBuffer;
