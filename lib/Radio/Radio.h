@@ -4,7 +4,7 @@
 /**
  * This class handles NRF24L01 communications with Mirf library
  * Address 0 is master (receiver)
- * Other addresses are sattelites
+ * Other addresses are satelites
  */
 
 #include <Arduino.h>
@@ -12,6 +12,7 @@
 #include <Mirf.h>
 #include <nRF24L01.h>
 #include <MirfHardwareSpiDriver.h>
+#include <Message.h>
 
 //How much bytes in a packet
 #define RF_PACKET_SIZE 16
@@ -25,7 +26,9 @@ public:
   bool begin(uint8_t rfchannel);
   void handler();
   void send(String command, uint8_t receiver);
+  void send(Message *msg);
   String getCommand();
+  Message getMessage();
   bool ready();
   bool available();
   ~CRadio();

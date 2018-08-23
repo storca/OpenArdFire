@@ -133,6 +133,17 @@ String CRadio::getCommand()
   return command;
 }
 /**
+ * Get a message object from received commands
+ * @return message object
+ */
+Message CRadio::getMessage()
+{
+  unsigned int address = this->channel;
+  Message msg(address);
+  msg.setMessage(getCommand());
+  return msg;
+}
+/**
  * Send a command on a given receiver
  * @param command  command to send
  * @param receiver receiver's address
@@ -142,10 +153,20 @@ void CRadio::send(String command, uint8_t receiver)
   if(!ready())
     return;
 
+  //Message msg(_)
+
   setSendAddress(receiver);
   //Append command to buffer
-  *_sendBuffer = command;
+  *_sendBuffer += command;
   *_sendBuffer += char(RF_ENDMSG_CHAR);
+}
+/**
+ * Send a message to a receiver
+ * @param msg message object
+ */
+void CRadio::send(Message *msg)
+{
+  send(msg->getMessage(), msg->msg.to.toInt());
 }
 /**
  * Radio Dtor

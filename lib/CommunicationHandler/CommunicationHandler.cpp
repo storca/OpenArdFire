@@ -5,7 +5,7 @@ CommunicationHandler::CommunicationHandler(HardwareSerial *s, SoftwareSerial *rf
   this->_localSerial = s;
   this->_rfSerial = rf;
   this->_deviceAddress = deviceAddress;
-  this->_messageHandler = new Message(&this->_deviceAddress);
+  this->_messageHandler = new Message(this->_deviceAddress);
 }
 /**
  * Handles serial communications, call this function in loop
@@ -140,15 +140,15 @@ bool CommunicationHandler::needSend(String *buffer)
 void CommunicationHandler::processMessage(String message, int from)
 {
   _messageHandler->setMessage(message);
-  if(_messageHandler->msg->from = "m" && isAddressInt(_messageHandler->msg->to))
+  if(_messageHandler->msg.from = "m" && isAddressInt(_messageHandler->msg.to))
   {
-    if(_messageHandler->msg->to.toInt() == _deviceAddress || _messageHandler->msg->to == "a")
+    if(_messageHandler->msg.to.toInt() == _deviceAddress || _messageHandler->msg.to == "a")
     {
       switch (from) {
         case Local:
-          _localProcessQueue + _messageHandler->msg->command;
+          _localProcessQueue + _messageHandler->msg.command;
         case Radio:
-          _rfProcessQueue + _messageHandler->msg->command;
+          _rfProcessQueue + _messageHandler->msg.command;
       }
     }
   }
@@ -202,10 +202,10 @@ String CommunicationHandler::processSend(String *queue)
   Message *msg;
   String command = extractCommand(queue);
 
-  msg = new Message(&_deviceAddress);
+  msg = new Message(_deviceAddress);
   msg->setMessage(command);
 
-  return msg->encodeMessage(command, msg->msg->to);
+  return msg->encodeMessage(command, msg->msg.to);
 }
 
 /**
@@ -230,112 +230,4 @@ bool CommunicationHandler::isAddressInt(String address)
 CommunicationHandler::~CommunicationHandler()
 {
   delete _messageHandler;
-}
-
-/*
-Message Class
- */
-/**
- * New message object
- * @param msg Message to process
- */
-Message::Message(unsigned int *deviceAddress)
-{
-  _deviceAddress = deviceAddress;
-  msg = new message;
-}
-/**
- * Set message to process
- * @param msg Message to process
- */
-void Message::setMessage(String msg)
-{
-  _msgToProcess = msg;
-  process();
-}
-/**
- * Get message that has been processed
- * @return Message that has been processed
- */
-String Message::getMessage()
-{
-  return _msgToProcess;
-}
-/**
- * Encode a message with the protocol
- * @param  command  Command to send with its arguments
- * @param  receiver Receiver address
- * @return          Encoded message
- */
-String Message::encodeMessage(String command, String receiver)
-{
-  String result = "";
-
-  //Add our sender address
-  result + String(*_deviceAddress);
-  //Add separation char
-  result += '/';
-  //Add receiver address
-  result + receiver;
-  //Add separation char
-  result += ':';
-  //Add command
-  result + command;
-  //Add endline char
-  result += '\n';
-
-  return result;
-}
-/**
- * Process the given message
- * @param maxMsgLen Max message length
- */
-void Message::process(int maxMsgLen)
-{
-  int i = 0;
-  while(_msgToProcess[i] != '/')
-  {
-    //Add character to from
-    msg->from += _msgToProcess[i];
-    i++;
-
-    if(i >= maxMsgLen)
-    {
-      msg->from = "\0";
-      return;
-    }
-  }
-
-  //Skip the '/' character
-  i++;
-
-  while(_msgToProcess[i] != ':')
-  {
-    msg->to += _msgToProcess[i];
-    i++;
-
-    if(i >= maxMsgLen)
-    {
-      msg->to = "\0";
-      return;
-    }
-  }
-
-  //Skip the ':' character
-  i++;
-
-  //Rest of the string is the command
-  while(_msgToProcess[i] != '\0')
-  {
-    msg->command += _msgToProcess[i];
-    if(i >= maxMsgLen)
-    {
-      //message too long
-      return;
-    }
-  }
-}
-Message::~Message()
-{
-  delete msg;
 }

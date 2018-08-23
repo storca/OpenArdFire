@@ -30,10 +30,12 @@ Protocol specifications :
   NOTE : receivers are able to receive messages only from 'm'
   NOTE : receiver address 'a' means all ; so 'm/a:selftest' will be sent
   to all receivers
+  NOTE : this protocol is handled by Message.h
  */
 
 #include <Arduino.h>
 #include <SoftwareSerial.h>
+#include <Message.h>
 
 /*
   Maximum device index length, passed that value, device index will become 0
@@ -51,32 +53,7 @@ Protocol specifications :
 //Used for messages provenance in processCommand
 enum {Local, Radio, Both};
 
-//Class used to decode and address messages
-//The processing is a bit heavy, this is why I created a separated class
-class Message
-{
-public:
-  struct message
-  {
-    String from;
-    String to;
-    String command;
-  };
-  struct message *msg;
 
-  Message(unsigned int *deviceAddress);
-  void setMessage(String msg);
-  String getMessage();
-  String encodeMessage(String command, String receiver);
-  ~Message();
-
-private:
-  //Struct to store messages
-  void process(int maxMsgLen = CH_MAX_MESSAGE_LEN);
-  String _msgToProcess;
-  unsigned int *_deviceAddress = nullptr;
-
-};
 
 class CommunicationHandler
 {
