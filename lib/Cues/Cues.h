@@ -2,6 +2,9 @@
 #define CUES_H
 
 /*
+This library is the ♥ of satelites, it is this library that
+has physical impact on igniters :)
+
 This library handles every single cue wait time without pausing with delay()
 It handles only one set of cues (1 mcp)
 NOTE : trigger(1) sets the first cue to HIGH for 500ms

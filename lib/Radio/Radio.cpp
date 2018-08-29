@@ -92,7 +92,7 @@ bool CRadio::ready()
 void CRadio::processPacket(byte packet[RF_PACKET_SIZE])
 {
   //Add the packet to the receive buffer
-  for (size_t i = 0; i < RF_PACKET_SIZE+1; i++) {
+  for (size_t i = 0; i < RF_PACKET_SIZE; i++) {
     *_receiveBuffer += char(packet[i]);
   }
 }

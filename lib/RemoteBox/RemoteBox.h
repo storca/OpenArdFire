@@ -1,6 +1,9 @@
 #ifndef REMOTEBOX_H
 #define REMOTEBOX_H
-
+/*
+Depreceated library as soon as I2C is not a good option for ong range data
+transmition
+ */
 /*
 This library is managning the "remote boxes" connected to any receiver
 Each receiver can support up to 8 remote boxes with 15 cues per box (one cue

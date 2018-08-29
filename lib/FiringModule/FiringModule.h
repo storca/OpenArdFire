@@ -2,11 +2,8 @@
 #define FIRINGMODULE_H
 
 /*
-This library manages securities, cues and coordinates communication with actions
-  It's the ♥ of our firing system :)
-  It can be run in two modes : (not done yet, looking into re-organising library)
-      - With RemoteBoxes : it works with remote boxes
-      - With ArduinoCues : it works with arduino cues only (for simple systems)
+This library is the brain of satelites, it is this library that
+coordinates actions :D
  */
 
 //Number of securities used by the firing module
@@ -15,14 +12,17 @@ This library manages securities, cues and coordinates communication with actions
 //What is the pin that triggers the relays
 #define FM_TESTPIN 6
 
-
 #include <Arduino.h>
 #include <Logging.h>
+#include <CommunicationHandler.h>
+#include <Radio.h>
+#include "ErrorCodes.h"
 
 class FiringModule
 {
 public:
-  FiringModule(unsigned int &testPins, Logger &log, bool testPinState=LOW);
+  FiringModule(uint8_t address);
+  void handler();
   ~FiringModule();
 
   //Securities
@@ -37,14 +37,26 @@ public:
   bool ignite(int cue, int duration=500);
 
 private:
+
+  //Commands
+  void info();
+  void selfcheck();
+
+
+  void sendErrorCode(int errorcode);
+
+  void processMessage(Message msg);
+
+  String splitCommand(String command, int row);
+
+  CRadio *_radio;
+  CommunicationHandler *_ch;
+  Message *_mymsg;
   unsigned int *_testPin;
   unsigned int *_analogTestPin;
   //State to set to enable test relays
   bool _testPinState = LOW;
   bool _securities[FM_NB_SECURITIES];
-  Logger *_logger;
-
-  void welcome();
 };
 
 #endif

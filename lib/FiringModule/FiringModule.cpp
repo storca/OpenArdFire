@@ -1,15 +1,11 @@
 #include "FiringModule.h"
 
-FiringModule::FiringModule(unsigned int &testPin, Logger &log, bool testPinState)
+FiringModule::FiringModule(uint8_t address)
 {
-  this->_logger = &log;
-  this->_testPin = &testPin;
+  _radio = new CRadio();
+  _radio->begin(address);
 
-}
-
-void FiringModule::welcome()
-{
-
+  _mymsg = new Message(address);
 }
 
 /**
@@ -33,55 +29,86 @@ bool FiringModule::isSafe()
     //If security is set to false
     if(!this->_securities[i])
     {
-      String msg = "Security nbr " + String(i) + " is enabled";
-      this->_logger->warn(msg);
       return false;
     }
   }
   return true;
 }
 
-/**
- * Test a single cue
- * @param  cue         Cue to test
- * @param  analogLimit Limit to return a true test statement
- * @return             true -> cue is ready
- *                     false -> cue is not connected
- */
-bool FiringModule::test(int cue, int analogLimit)
+void FiringModule::sendErrorCode(int errorCode)
 {
-  //Enabling test relay
-  digitalWrite(*this->_testPin, LOW);
-
-  //Cues.h implementation here
-
-  //Disabling test relays
-  digitalWrite(*this->_testPin, HIGH);
-
-  //Compiler is crying
-  return false;
-
+  String command = String("e ") + String(errorCode);
+  //send to master
+  //
+  _radio->send(command, 0);
 }
 
-/**
- * Ignite a given cue
- * @param  cue      Cue to ignite
- * @param  duration Ignite duration
- * @return          true if ignited, false if securities are enabled
- */
-bool FiringModule::ignite(int cue, int duration)
+void FiringModule::processMessage(Message msg)
 {
-  if(this->isSafe())
-  {
-      //Cues.h implementation here
+  String cmd;
+  cmd = splitCommand(msg.msg.command, 0);
 
-      return true;
+  if(cmd == "ping")
+  {
+    //Encode answer
+    _mymsg->setCommand("pong", msg.msg.from);
+    //Send it
+    _radio->send(_mymsg);
+  }
+  else if(cmd == "info")
+  {
+    info();
+  }
+  else if(cmd == "check")
+  {
+    selfcheck();
+  }
+  else if(cmd == "test")
+  {
+
+  }
+  else if(cmd == "security")
+  {
+
   }
   else
   {
-      return false;
+    sendErrorCode(CODE_COMMAND_NOT_UNDERSTOOD);
   }
+}
 
+String FiringModule::splitCommand(String command, int argument)
+{
+  String textToReturn = "";
+
+  //Iterate over characters
+  int i = 0;
+  //Iterate over words
+  int i2 = 0;
+
+  int maxLength = command.length();
+
+  while(i2 != argument)
+  {
+    textToReturn = "";
+    while(command[i] != '\0' && command[i] != 32)
+      {
+        textToReturn += command[i];
+        i++;
+        if(i > maxLength)
+        {
+          return String("Command is too long");
+        }
+      }
+      i++;
+      //Skip the spaces
+      while(command[i] == 32)
+        {
+          i++;
+        }
+      i2++;
+  }
+  return textToReturn;
 }
 
 FiringModule::~FiringModule()

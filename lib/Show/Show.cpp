@@ -4,6 +4,7 @@
  * @param cues set of cues
  */
 Show::Show(Cues *cues)
+:_triggeredCues(0)
 {
   _cues = cues;
   _nbOfCues = _cues->getNumberOfCues();

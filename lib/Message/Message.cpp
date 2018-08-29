@@ -7,8 +7,9 @@ Message Class
  * @param msg Message to process
  */
 Message::Message(unsigned int deviceAddress)
+:_deviceAddress(deviceAddress)
 {
-  _deviceAddress = deviceAddress;
+  
 }
 /**
  * Set encoded message to decode
