@@ -71,4 +71,4 @@
      - platformio lib -g install 170
 
  script:
-     - platformio ci --lib="lib/" --board=nanoatmega328
+     - platformio ci --lib="./lib/" --board=nanoatmega328
