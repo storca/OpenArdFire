@@ -1,8 +1,9 @@
-#include <Cues.h>
-
-//Put mcp addresses here
+//Set mcp addresses before including library
 //By default 0x20 and 0x21
 #define C_MCPS {0x25, 0x26, 0x27}
+
+#include <Cues.h>
+
 
 //Let's say that we'd like to use 35 cues out of the 48 available
 Cues myCues(35);

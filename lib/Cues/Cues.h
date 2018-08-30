@@ -15,11 +15,13 @@ NOTE : trigger(0) will not work, this function takes cue _numbers_ (from 1 to an
 #include <Arduino.h>
 #include <Adafruit_MCP23017.h>
 
+#ifndef C_MCPS
 //2 MCPs on respective addresses 0 and 1
 #define C_MCPS {0x20, 0x21}
 // Addresses are from 0x20 to 0x27
 // MCP address : 0 1 0 0 A2 A1 A0
 //http://ww1.microchip.com/downloads/en/DeviceDoc/20001952C.pdf p15
+#endif
 
 class Cues
 {
