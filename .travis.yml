@@ -58,9 +58,9 @@
      directories:
          - "~/.platformio"
 
- env:
-     - PLATFORMIO_CI_SRC=src/main.cpp
-     - PLATFORMIO_CI_SRC=tests/
+# env:
+#     - PLATFORMIO_CI_SRC=src/main.cpp
+#     - PLATFORMIO_CI_SRC=tests/
 
  install:
      - pip install -U platformio
@@ -71,4 +71,5 @@
      - platformio lib -g install 170
 
  script:
-     - platformio ci --lib="./lib/*" --board=nanoatmega328
+     - platformio run
+     #- platformio ci --lib="./lib/*" --board=nanoatmega328
