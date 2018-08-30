@@ -96,7 +96,8 @@ void Cues::setMcp(uint8_t cue, bool value, bool notACue)
 void Cues::trigger(uint8_t cue)
 {
   //Do not trigger a cue that is higher than the usable cues
-  if(cue > *_nbOfCues)
+  //Do not trigger if security is enabled
+  if(cue > *_nbOfCues || !_security)
   {
     return;
   }

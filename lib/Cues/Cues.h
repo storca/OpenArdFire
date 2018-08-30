@@ -35,6 +35,8 @@ public:
 
   ~Cues();
 
+  //How much time the cues are on
+  unsigned int _onTime = 500;
 
 private:
   //Status of the security
@@ -49,9 +51,6 @@ private:
   // This value (t + _onTime) is stored in this array
   // It is a pointer because of the NbOfCues that is variable
   uint32_t *_cues;
-
-  //How much time the cues are on
-  unsigned int _onTime = 500;
 
   Adafruit_MCP23017 *_mcps;
   size_t _numberOfMcps;
