@@ -15,13 +15,6 @@ void setup()
   //Authorise cue triggering
   myCues.authorise(true);
 
-}
-
-void loop()
-{
-  //Call the handler
-  myCues.handler();
-
   //Those two cues will be almost triggered together
   //and then turned off by handler().
   //it will not slow down the loop as it does
@@ -33,5 +26,12 @@ void loop()
   //because we enabled the security
   myCues.authorise(false);
   myCues.trigger(2);
+
+}
+
+void loop()
+{
+  //Call the handler
+  myCues.handler();
 
 }
