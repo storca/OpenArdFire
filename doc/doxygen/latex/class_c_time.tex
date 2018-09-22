@@ -1,0 +1,47 @@
+\hypertarget{class_c_time}{}\section{C\+Time Class Reference}
+\label{class_c_time}\index{C\+Time@{C\+Time}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_time_a2bcc51d6af92cb1d3145c754f5e00be7}\label{class_c_time_a2bcc51d6af92cb1d3145c754f5e00be7}} 
+void {\bfseries update} (unsigned long unix\+\_\+time)
+\item 
+unsigned long \hyperlink{class_c_time_a5893514c278970e4ab40b6bd338f0850}{get} ()
+\item 
+bool \hyperlink{class_c_time_a39e22cf3416d9043ae9f72ec69ad3f7f}{match} (unsigned long unix\+\_\+time)
+\item 
+\mbox{\Hypertarget{class_c_time_a36bd3018e45c14f5261bf6a4bfd54f3f}\label{class_c_time_a36bd3018e45c14f5261bf6a4bfd54f3f}} 
+void {\bfseries handler} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_c_time_a5893514c278970e4ab40b6bd338f0850}\label{class_c_time_a5893514c278970e4ab40b6bd338f0850}} 
+\index{C\+Time@{C\+Time}!get@{get}}
+\index{get@{get}!C\+Time@{C\+Time}}
+\subsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily unsigned long C\+Time\+::get (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get the actual unix time \begin{DoxyReturn}{Returns}
+Unix time 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_time_a39e22cf3416d9043ae9f72ec69ad3f7f}\label{class_c_time_a39e22cf3416d9043ae9f72ec69ad3f7f}} 
+\index{C\+Time@{C\+Time}!match@{match}}
+\index{match@{match}!C\+Time@{C\+Time}}
+\subsubsection{\texorpdfstring{match()}{match()}}
+{\footnotesize\ttfamily bool C\+Time\+::match (\begin{DoxyParamCaption}\item[{unsigned long}]{unix\+\_\+time }\end{DoxyParamCaption})}
+
+Checks if the given time is the same as in the clock 
+\begin{DoxyParams}{Parameters}
+{\em unix\+\_\+time} & unix time to compare \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if matches 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+C\+Time/C\+Time.\+h\item 
+lib/\+C\+Time/C\+Time.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,100 @@
+Driver for \hyperlink{class_r_d_m6300}{R\+D\+M6300} \hyperlink{class_r_f_i_d}{R\+F\+ID} reader to Arduino. \hyperlink{class_r_d_m6300}{R\+D\+M6300} supports 125\+K\+Hz tags that store 40-\/bit I\+Ds. The driver handles the I\+Ds as 64-\/bit integers (unsigned long long), keeping the 24 M\+SB always in zero.
+
+The current version was tested using Software\+Serial on Arduino Uno, and Hardware\+Serial for Arduino Due. Please note that there are diferences in the instantiation of the component for these boards, probably due to some problem with global constructors using the A\+RM compiler (I still looking into the actual causes of this issue). Also note that Arduino\textquotesingle{}s Serial.\+print does not support 64-\/bit integers, so \hyperlink{class_r_d_m6300}{R\+D\+M6300} implements a method to print tag I\+Ds.
+
+\subsection*{Installation}
+
+To install the library, download the zip file and import it into the Arduino environment by the \char`\"{}\+Sketch\char`\"{} menu in the Arduino I\+DE.
+
+\subsection*{Example\+: Software\+Serial on Arduino Uno (A\+VR)}
+
+
+\begin{DoxyCode}
+\textcolor{preprocessor}{#include <SoftwareSerial.h>}
+\textcolor{preprocessor}{#include "RDM6300.h"}
+
+SoftwareSerial rdm\_serial(2, 3);
+\hyperlink{class_r_d_m6300}{RDM6300<SoftwareSerial>} rdm(&rdm\_serial);
+
+\textcolor{keywordtype}{int} led\_pin = 13;
+
+\textcolor{keywordtype}{void} blink(\textcolor{keywordtype}{int} n = 1) 
+\{
+  \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < n; i++) \{
+    digitalWrite(led\_pin, HIGH);
+    delay(200);
+    digitalWrite(led\_pin, LOW);
+    delay(200);
+  \}
+\}
+
+\textcolor{keywordtype}{void} setup()
+\{
+  pinMode(led\_pin, OUTPUT);
+  digitalWrite(led\_pin, LOW);
+  Serial.begin(115200);
+  Serial.println(\textcolor{stringliteral}{"SETUP"});
+  blink(5);
+\}
+
+\textcolor{keywordtype}{void} loop()
+\{
+  \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} my\_id = 0x0000ABCDEF;
+  \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} last\_id = 0;
+
+  last\_id = rdm.read();
+  Serial.print(\textcolor{stringliteral}{"RFID: 0x"});
+  rdm.print\_int64(last\_id);
+  Serial.println();
+
+  \textcolor{keywordflow}{if}(last\_id == my\_id) blink(3);
+
+\}
+\end{DoxyCode}
+
+
+\subsection*{Example\+: Hardware\+Serial on Arduino Due (A\+RM)}
+
+
+\begin{DoxyCode}
+\textcolor{preprocessor}{#include "RDM6300.h"}
+
+\hyperlink{class_r_d_m6300}{RDM6300<HardwareSerial>} * rdm;
+
+\textcolor{keywordtype}{int} led\_pin = 13;
+
+\textcolor{keywordtype}{void} blink(\textcolor{keywordtype}{int} n = 1) 
+\{
+  \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i = 0; i < n; i++) \{
+    digitalWrite(led\_pin, HIGH);
+    delay(200);
+    digitalWrite(led\_pin, LOW);
+    delay(200);
+  \}
+\}
+
+\textcolor{keywordtype}{void} setup()
+\{
+  rdm = \textcolor{keyword}{new} \hyperlink{class_r_d_m6300}{RDM6300<HardwareSerial>}(&Serial1);
+  pinMode(led\_pin, OUTPUT);
+  digitalWrite(led\_pin, LOW);
+  Serial.begin(115200);
+  Serial.println(\textcolor{stringliteral}{"SETUP"});
+  blink(5);
+\}
+
+\textcolor{keywordtype}{void} loop()
+\{
+  \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} my\_id = 0x0000ABCDEF;
+  \textcolor{keyword}{static} \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} \textcolor{keywordtype}{long} last\_id = 0;
+
+  last\_id = rdm->read();
+  Serial.print(\textcolor{stringliteral}{"RFID: 0x"});
+  rdm->print\_int64(last\_id);
+  Serial.println();
+
+  \textcolor{keywordflow}{if}(last\_id == my\_id) blink(3);
+
+\}
+\end{DoxyCode}
+ 

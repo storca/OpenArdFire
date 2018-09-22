@@ -1,0 +1,121 @@
+\hypertarget{class_firing_module}{}\section{Firing\+Module Class Reference}
+\label{class_firing_module}\index{Firing\+Module@{Firing\+Module}}
+
+
+Collaboration diagram for Firing\+Module\+:
+% FIG 0
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_firing_module_a034fcaf4a10a2bec3ca0704aca4c7b10}\label{class_firing_module_a034fcaf4a10a2bec3ca0704aca4c7b10}} 
+{\bfseries Firing\+Module} (int address)
+\item 
+\mbox{\Hypertarget{class_firing_module_a5c4da75d29ce0cc7e7c9c06f17f366c1}\label{class_firing_module_a5c4da75d29ce0cc7e7c9c06f17f366c1}} 
+void {\bfseries send} (int code)
+\item 
+\mbox{\Hypertarget{class_firing_module_adb957fa0d9d270aca2af7cca0e0204ab}\label{class_firing_module_adb957fa0d9d270aca2af7cca0e0204ab}} 
+void {\bfseries send} (\hyperlink{class_message}{Message} msg)
+\item 
+void \hyperlink{class_firing_module_a1cfc12f91cc5276efd4868f482269546}{process\+Message} (\hyperlink{class_message}{Message} msg)
+\item 
+\mbox{\Hypertarget{class_firing_module_a7afba134ae32d521a38bd96e272081b2}\label{class_firing_module_a7afba134ae32d521a38bd96e272081b2}} 
+\hyperlink{class_cues}{Cues} $\ast$ {\bfseries get\+Cues} ()
+\item 
+\mbox{\Hypertarget{class_firing_module_aacedd35767c605f184328566a9983291}\label{class_firing_module_aacedd35767c605f184328566a9983291}} 
+void {\bfseries info} ()
+\item 
+void \hyperlink{class_firing_module_aa5cecfeb14decf65e0cd7fd8b94f803f}{selfcheck} ()
+\item 
+\mbox{\Hypertarget{class_firing_module_adf91f741c765fa09963e0dc868709cd1}\label{class_firing_module_adf91f741c765fa09963e0dc868709cd1}} 
+void {\bfseries test\+Cues} (\hyperlink{class_message}{Message} msg)
+\item 
+\mbox{\Hypertarget{class_firing_module_ac8087a1ca1158327bb2e9c81a3eb6501}\label{class_firing_module_ac8087a1ca1158327bb2e9c81a3eb6501}} 
+{\bfseries Firing\+Module} (uint8\+\_\+t address)
+\item 
+\mbox{\Hypertarget{class_firing_module_a4b406863957a6b06d4c6ff5d323def6d}\label{class_firing_module_a4b406863957a6b06d4c6ff5d323def6d}} 
+void {\bfseries handler} ()
+\item 
+void \hyperlink{class_firing_module_a8c41af56ea974d2b91981806aa3f289c}{set\+Security} (int security\+Id, bool state)
+\item 
+bool \hyperlink{class_firing_module_a2262a4b7108ac2dff49d925cff42e0ae}{is\+Safe} ()
+\item 
+\mbox{\Hypertarget{class_firing_module_acf6659f0bc08a4230ffb0554a4cea6ae}\label{class_firing_module_acf6659f0bc08a4230ffb0554a4cea6ae}} 
+bool {\bfseries test} (int cue, int analog\+Limit=400)
+\item 
+\mbox{\Hypertarget{class_firing_module_a477cc1e2bf569719a836358008cfd6a6}\label{class_firing_module_a477cc1e2bf569719a836358008cfd6a6}} 
+bool {\bfseries ignite} (int cue, int duration=500)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_firing_module_a78b13b30e9a6a9e471b1395717eb1363}\label{class_firing_module_a78b13b30e9a6a9e471b1395717eb1363}} 
+int {\bfseries \+\_\+address}
+\item 
+\mbox{\Hypertarget{class_firing_module_aec71270ff967f6f9ccc760909dcb9c2f}\label{class_firing_module_aec71270ff967f6f9ccc760909dcb9c2f}} 
+int {\bfseries \+\_\+usable\+\_\+cues}
+\item 
+\mbox{\Hypertarget{class_firing_module_a23a87233d2702a55dfa0f09642c7c44e}\label{class_firing_module_a23a87233d2702a55dfa0f09642c7c44e}} 
+\hyperlink{class_cues}{Cues} $\ast$ {\bfseries \+\_\+cues}
+\item 
+\mbox{\Hypertarget{class_firing_module_a42e8b2e037d30816f0fd7d86f308a9d3}\label{class_firing_module_a42e8b2e037d30816f0fd7d86f308a9d3}} 
+\hyperlink{class_show}{Show} $\ast$ {\bfseries \+\_\+show}
+\item 
+\mbox{\Hypertarget{class_firing_module_a9a4e27c792cc340312fe6492d33a49c0}\label{class_firing_module_a9a4e27c792cc340312fe6492d33a49c0}} 
+\hyperlink{class_c_radio}{C\+Radio} $\ast$ {\bfseries \+\_\+radio}
+\item 
+\mbox{\Hypertarget{class_firing_module_a6b54628cd8df339855a2a3d27fc92313}\label{class_firing_module_a6b54628cd8df339855a2a3d27fc92313}} 
+bool {\bfseries test\+\_\+authorised} = false
+\item 
+\mbox{\Hypertarget{class_firing_module_a2a458b7eed797656661ba0622b941c06}\label{class_firing_module_a2a458b7eed797656661ba0622b941c06}} 
+bool {\bfseries show\+\_\+authorised} = false
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_firing_module_a2262a4b7108ac2dff49d925cff42e0ae}\label{class_firing_module_a2262a4b7108ac2dff49d925cff42e0ae}} 
+\index{Firing\+Module@{Firing\+Module}!is\+Safe@{is\+Safe}}
+\index{is\+Safe@{is\+Safe}!Firing\+Module@{Firing\+Module}}
+\subsubsection{\texorpdfstring{is\+Safe()}{isSafe()}}
+{\footnotesize\ttfamily bool Firing\+Module\+::is\+Safe (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks if the firing module\textquotesingle{}s securities are disabled \begin{DoxyReturn}{Returns}
+true-\/$>$securities are disabled 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_firing_module_a1cfc12f91cc5276efd4868f482269546}\label{class_firing_module_a1cfc12f91cc5276efd4868f482269546}} 
+\index{Firing\+Module@{Firing\+Module}!process\+Message@{process\+Message}}
+\index{process\+Message@{process\+Message}!Firing\+Module@{Firing\+Module}}
+\subsubsection{\texorpdfstring{process\+Message()}{processMessage()}}
+{\footnotesize\ttfamily void Firing\+Module\+::process\+Message (\begin{DoxyParamCaption}\item[{\hyperlink{class_message}{Message}}]{msg }\end{DoxyParamCaption})}
+
+Process a given message 
+\begin{DoxyParams}{Parameters}
+{\em msg} & \hyperlink{class_message}{Message} to process \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_firing_module_aa5cecfeb14decf65e0cd7fd8b94f803f}\label{class_firing_module_aa5cecfeb14decf65e0cd7fd8b94f803f}} 
+\index{Firing\+Module@{Firing\+Module}!selfcheck@{selfcheck}}
+\index{selfcheck@{selfcheck}!Firing\+Module@{Firing\+Module}}
+\subsubsection{\texorpdfstring{selfcheck()}{selfcheck()}}
+{\footnotesize\ttfamily void Firing\+Module\+::selfcheck (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Firing module self check function \mbox{\Hypertarget{class_firing_module_a8c41af56ea974d2b91981806aa3f289c}\label{class_firing_module_a8c41af56ea974d2b91981806aa3f289c}} 
+\index{Firing\+Module@{Firing\+Module}!set\+Security@{set\+Security}}
+\index{set\+Security@{set\+Security}!Firing\+Module@{Firing\+Module}}
+\subsubsection{\texorpdfstring{set\+Security()}{setSecurity()}}
+{\footnotesize\ttfamily void Firing\+Module\+::set\+Security (\begin{DoxyParamCaption}\item[{int}]{security\+Id,  }\item[{bool}]{state }\end{DoxyParamCaption})}
+
+Set a security of the x securities defined 
+\begin{DoxyParams}{Parameters}
+{\em security\+Id} & Security Id eg. 0, 1, 2... \\
+\hline
+{\em state} & Status of the security (false -\/$>$ enabled, true-\/$>$disabled) \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Firing\+Module/Firing\+Module.\+h\item 
+lib/\+Firing\+Module.\+old/Firing\+Module\+\_\+old.\+h\item 
+lib/\+Firing\+Module/Firing\+Module.\+cpp\item 
+lib/\+Firing\+Module.\+old/Firing\+Module\+\_\+old.\+cpp\end{DoxyCompactItemize}

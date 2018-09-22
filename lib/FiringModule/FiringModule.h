@@ -1,62 +1,44 @@
-#ifndef FIRINGMODULE_H
-#define FIRINGMODULE_H
-
-/*
-This library is the brain of satelites, it is this library that
-coordinates actions :D
- */
-
-//Number of securities used by the firing module
-#define FM_NB_SECURITIES 3
-
-//What is the pin that triggers the relays
-#define FM_TESTPIN 6
-
 #include <Arduino.h>
-#include <Logging.h>
-#include <CommunicationHandler.h>
 #include <Radio.h>
+#include <Message.h>
+#include <Cues.h>
+#include <Show.h>
+//Generated with helper
 #include "ErrorCodes.h"
 
 class FiringModule
 {
 public:
-  FiringModule(uint8_t address);
-  void handler();
-  ~FiringModule();
+    //Methods
+    FiringModule(int address);
+    void send(int code);
+    void send(Message msg);
+    void processMessage(Message msg);
+    Cues* getCues();
+    ~FiringModule();
 
-  //Securities
-  void setSecurity(int securityId, bool state);
-  bool isSafe();
+    //Commands
+    void info();
+    void selfcheck();
+    void testCues(Message msg);
 
-  //Test
-  bool test(int cue, int analogLimit=400);
-  //void testSequence(int *cues, int analogLimit=400); to do
+    //Constants FIXME: actually use constants
+    int _address;
+    int _usable_cues;
 
-  //Ignite
-  bool ignite(int cue, int duration=500);
+    //Cue-related objects
+    Cues *_cues;
+    Show *_show;
+
+    //Communication object
+    CRadio *_radio;
+
+    //Securities
+    bool test_authorised = false;
+    bool show_authorised = false;
 
 private:
+  void handler();
+  String splitCommand();
 
-  //Commands
-  void info();
-  void selfcheck();
-
-
-  void sendErrorCode(int errorcode);
-
-  void processMessage(Message msg);
-
-  String splitCommand(String command, int row);
-
-  CRadio *_radio;
-  CommunicationHandler *_ch;
-  Message *_mymsg;
-  unsigned int *_testPin;
-  unsigned int *_analogTestPin;
-  //State to set to enable test relays
-  bool _testPinState = LOW;
-  bool _securities[FM_NB_SECURITIES];
-};
-
-#endif
+}

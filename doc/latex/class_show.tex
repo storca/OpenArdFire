@@ -1,0 +1,107 @@
+\hypertarget{class_show}{}\section{Show Class Reference}
+\label{class_show}\index{Show@{Show}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_show_a58a3196a85a9c3e1b1c63d285b856b98}{Show} (\hyperlink{class_cues}{Cues} $\ast$cues)
+\item 
+void \hyperlink{class_show_a29cf4d64bab00f43e2873f463ae12a45}{start} ()
+\item 
+bool \hyperlink{class_show_a7e550a1e7b0a11b290296adb4490e294}{running} ()
+\item 
+bool \hyperlink{class_show_ac4c870b4c29dac52a9bb41a99ab9fb6c}{set} (uint8\+\_\+t cue, unsigned long trigger\+Time)
+\item 
+bool \hyperlink{class_show_a8369b14a9b23c90f2c903aa0934da713}{save} (int address)
+\item 
+bool \hyperlink{class_show_a5b0ec76ffad16e42d14d9738a64d7181}{import} (int address)
+\item 
+void \hyperlink{class_show_a659057610d0df455128bfae9d27e7fc8}{handler} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_show_a58a3196a85a9c3e1b1c63d285b856b98}\label{class_show_a58a3196a85a9c3e1b1c63d285b856b98}} 
+\index{Show@{Show}!Show@{Show}}
+\index{Show@{Show}!Show@{Show}}
+\subsubsection{\texorpdfstring{Show()}{Show()}}
+{\footnotesize\ttfamily Show\+::\+Show (\begin{DoxyParamCaption}\item[{\hyperlink{class_cues}{Cues} $\ast$}]{cues }\end{DoxyParamCaption})}
+
+New show 
+\begin{DoxyParams}{Parameters}
+{\em cues} & set of cues \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_show_a659057610d0df455128bfae9d27e7fc8}\label{class_show_a659057610d0df455128bfae9d27e7fc8}} 
+\index{Show@{Show}!handler@{handler}}
+\index{handler@{handler}!Show@{Show}}
+\subsubsection{\texorpdfstring{handler()}{handler()}}
+{\footnotesize\ttfamily void Show\+::handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Handles the shows \+:D \mbox{\Hypertarget{class_show_a5b0ec76ffad16e42d14d9738a64d7181}\label{class_show_a5b0ec76ffad16e42d14d9738a64d7181}} 
+\index{Show@{Show}!import@{import}}
+\index{import@{import}!Show@{Show}}
+\subsubsection{\texorpdfstring{import()}{import()}}
+{\footnotesize\ttfamily bool Show\+::import (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption})}
+
+Import a show from an address 
+\begin{DoxyParams}{Parameters}
+{\em address} & Address where the show was stored \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_show_a7e550a1e7b0a11b290296adb4490e294}\label{class_show_a7e550a1e7b0a11b290296adb4490e294}} 
+\index{Show@{Show}!running@{running}}
+\index{running@{running}!Show@{Show}}
+\subsubsection{\texorpdfstring{running()}{running()}}
+{\footnotesize\ttfamily bool Show\+::running (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Check if the show is running \begin{DoxyReturn}{Returns}
+true if running 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_show_a8369b14a9b23c90f2c903aa0934da713}\label{class_show_a8369b14a9b23c90f2c903aa0934da713}} 
+\index{Show@{Show}!save@{save}}
+\index{save@{save}!Show@{Show}}
+\subsubsection{\texorpdfstring{save()}{save()}}
+{\footnotesize\ttfamily bool Show\+::save (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption})}
+
+Save a show in the specified eeprom address 
+\begin{DoxyParams}{Parameters}
+{\em address} & Address where the show is stored \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_show_ac4c870b4c29dac52a9bb41a99ab9fb6c}\label{class_show_ac4c870b4c29dac52a9bb41a99ab9fb6c}} 
+\index{Show@{Show}!set@{set}}
+\index{set@{set}!Show@{Show}}
+\subsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily bool Show\+::set (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cue,  }\item[{unsigned long}]{trigger\+Time }\end{DoxyParamCaption})}
+
+Set a single cue properties 
+\begin{DoxyParams}{Parameters}
+{\em cue} & Cue to set \\
+\hline
+{\em trigger\+Time} & The time after the beginning of the show when the cue have to be triggered (ms) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+true if success 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_show_a29cf4d64bab00f43e2873f463ae12a45}\label{class_show_a29cf4d64bab00f43e2873f463ae12a45}} 
+\index{Show@{Show}!start@{start}}
+\index{start@{start}!Show@{Show}}
+\subsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily void Show\+::start (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Start a show with parameters given 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Show/Show.\+h\item 
+lib/\+Show/Show.\+cpp\end{DoxyCompactItemize}

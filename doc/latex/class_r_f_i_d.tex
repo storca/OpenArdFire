@@ -1,0 +1,77 @@
+\hypertarget{class_r_f_i_d}{}\section{R\+F\+ID Class Reference}
+\label{class_r_f_i_d}\index{R\+F\+ID@{R\+F\+ID}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_r_f_i_d_a2b809351a1750216c755605a99a751f0}{R\+F\+ID} (Software\+Serial $\ast$rfid, \hyperlink{class_firing_module}{Firing\+Module} $\ast$fm)
+\item 
+void \hyperlink{class_r_f_i_d_a8b8f9db1b91701eaa744f5e39d93b55f}{add\+Tags} (unsigned long long $\ast$tags)
+\item 
+void \hyperlink{class_r_f_i_d_a0eee010e53dfae9c13cda31ae8cb8a13}{add\+Tag} (unsigned long long $\ast$tag)
+\item 
+bool \hyperlink{class_r_f_i_d_aba5b7775ad04dfec3524a82520d4e8e5}{valid} ()
+\item 
+void \hyperlink{class_r_f_i_d_aad926c48b528a510b4d34c4019632e09}{handler} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_r_f_i_d_a2b809351a1750216c755605a99a751f0}\label{class_r_f_i_d_a2b809351a1750216c755605a99a751f0}} 
+\index{R\+F\+ID@{R\+F\+ID}!R\+F\+ID@{R\+F\+ID}}
+\index{R\+F\+ID@{R\+F\+ID}!R\+F\+ID@{R\+F\+ID}}
+\subsubsection{\texorpdfstring{R\+F\+I\+D()}{RFID()}}
+{\footnotesize\ttfamily R\+F\+I\+D\+::\+R\+F\+ID (\begin{DoxyParamCaption}\item[{Software\+Serial $\ast$}]{rfid,  }\item[{\hyperlink{class_firing_module}{Firing\+Module} $\ast$}]{fm }\end{DoxyParamCaption})}
+
+Create a new \hyperlink{class_r_f_i_d}{R\+F\+ID} handler 
+\begin{DoxyParams}{Parameters}
+{\em rfid} & \hyperlink{class_r_f_i_d}{R\+F\+ID} serial \\
+\hline
+{\em fm} & Firing Module \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_r_f_i_d_a0eee010e53dfae9c13cda31ae8cb8a13}\label{class_r_f_i_d_a0eee010e53dfae9c13cda31ae8cb8a13}} 
+\index{R\+F\+ID@{R\+F\+ID}!add\+Tag@{add\+Tag}}
+\index{add\+Tag@{add\+Tag}!R\+F\+ID@{R\+F\+ID}}
+\subsubsection{\texorpdfstring{add\+Tag()}{addTag()}}
+{\footnotesize\ttfamily void R\+F\+I\+D\+::add\+Tag (\begin{DoxyParamCaption}\item[{unsigned long long $\ast$}]{tag }\end{DoxyParamCaption})}
+
+Add a single tag to the others 
+\begin{DoxyParams}{Parameters}
+{\em tag} & tag to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_r_f_i_d_a8b8f9db1b91701eaa744f5e39d93b55f}\label{class_r_f_i_d_a8b8f9db1b91701eaa744f5e39d93b55f}} 
+\index{R\+F\+ID@{R\+F\+ID}!add\+Tags@{add\+Tags}}
+\index{add\+Tags@{add\+Tags}!R\+F\+ID@{R\+F\+ID}}
+\subsubsection{\texorpdfstring{add\+Tags()}{addTags()}}
+{\footnotesize\ttfamily void R\+F\+I\+D\+::add\+Tags (\begin{DoxyParamCaption}\item[{unsigned long long $\ast$}]{tags }\end{DoxyParamCaption})}
+
+Add some tags 
+\begin{DoxyParams}{Parameters}
+{\em tags} & tags to add \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_r_f_i_d_aad926c48b528a510b4d34c4019632e09}\label{class_r_f_i_d_aad926c48b528a510b4d34c4019632e09}} 
+\index{R\+F\+ID@{R\+F\+ID}!handler@{handler}}
+\index{handler@{handler}!R\+F\+ID@{R\+F\+ID}}
+\subsubsection{\texorpdfstring{handler()}{handler()}}
+{\footnotesize\ttfamily void R\+F\+I\+D\+::handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Handles \hyperlink{class_r_f_i_d}{R\+F\+ID} \mbox{\Hypertarget{class_r_f_i_d_aba5b7775ad04dfec3524a82520d4e8e5}\label{class_r_f_i_d_aba5b7775ad04dfec3524a82520d4e8e5}} 
+\index{R\+F\+ID@{R\+F\+ID}!valid@{valid}}
+\index{valid@{valid}!R\+F\+ID@{R\+F\+ID}}
+\subsubsection{\texorpdfstring{valid()}{valid()}}
+{\footnotesize\ttfamily bool R\+F\+I\+D\+::valid (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Checks if the \hyperlink{class_r_f_i_d}{R\+F\+ID} is valid \begin{DoxyReturn}{Returns}
+true if valid 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+R\+F\+I\+D/R\+F\+I\+D.\+h\item 
+lib/\+R\+F\+I\+D/R\+F\+I\+D.\+cpp\end{DoxyCompactItemize}

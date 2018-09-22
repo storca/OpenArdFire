@@ -1,53 +1,37 @@
 #include "FiringModule.h"
 
-FiringModule::FiringModule(uint8_t address)
+FiringModule::FiringModule(int address, int usable_cues)
 {
+  _address = address;
+  _usable_cues = usable_cues;
+
+  //Set up cues and show object
+  _cues = new Cues(usable_cues);
+  _show = new Show(_cues);
+
+  //Set up rf communications
   _radio = new CRadio();
-  _radio->begin(address);
-
-  _mymsg = new Message(address);
+  _radio->begin(_address);
 }
-
-/**
- * Set a security of the x securities defined
- * @param securityId Security Id eg. 0, 1, 2...
- * @param state      Status of the security (false -> enabled, true->disabled)
- */
-void FiringModule::setSecurity(int securityId, bool state)
+void FiringModule::handler()
 {
-  this->_securities[securityId] = state;
-}
+  //Call the handlers
+  _cues->handler();
+  _show->handler();
 
-/**
- * Checks if the firing module's securities are disabled
- * @return true->securities are disabled
- */
-bool FiringModule::isSafe()
-{
-  for(unsigned int i=0; i<= sizeof(this->_securities); i++)
+  //Check for incoming message(s)
+  if(_radio->available())
   {
-    //If security is set to false
-    if(!this->_securities[i])
-    {
-      return false;
-    }
+    //Process it
+    processMessage(_radio->getMessage());
   }
-  return true;
 }
-
-void FiringModule::sendErrorCode(int errorCode)
-{
-  String command = String("e ") + String(errorCode);
-  //send to master
-  //
-  _radio->send(command, 0);
-}
-
-void FiringModule::processMessage(Message msg)
+void processMessage(Message msg)
 {
   String cmd;
   cmd = splitCommand(msg.msg.command, 0);
 
+  //Check if command is valid
   if(cmd == "ping")
   {
     //Encode answer
@@ -65,53 +49,61 @@ void FiringModule::processMessage(Message msg)
   }
   else if(cmd == "test")
   {
-
+    testCues(msg);
   }
   else if(cmd == "security")
   {
-
+    //TODO implement an object to manage securities
   }
   else
   {
-    sendErrorCode(CODE_COMMAND_NOT_UNDERSTOOD);
+    send(CODE_COMMAND_NOT_UNDERSTOOD);
   }
 }
-
-String FiringModule::splitCommand(String command, int argument)
+/*
+------------------Commands
+ */
+void FiringModule::info()
 {
-  String textToReturn = "";
-
-  //Iterate over characters
-  int i = 0;
-  //Iterate over words
-  int i2 = 0;
-
-  int maxLength = command.length();
-
-  while(i2 != argument)
-  {
-    textToReturn = "";
-    while(command[i] != '\0' && command[i] != 32)
-      {
-        textToReturn += command[i];
-        i++;
-        if(i > maxLength)
-        {
-          return String("Command is too long");
-        }
-      }
-      i++;
-      //Skip the spaces
-      while(command[i] == 32)
-        {
-          i++;
-        }
-      i2++;
-  }
-  return textToReturn;
+  String infoStr = "info ";
+  //Add version
+  infoStr += String(FM_VERSION)
+  infoStr += String(" ");
+  //Send it
+  send(infoStr);
 }
-
+void FiringModule::selfcheck()
+{
+  //TODO : check securities here
+  send(CODE_OK);
+}
+void FiringModule::testCues(Message msg)
+{
+  //TODO trigger relay
+  //TODO check securities
+  //TODO implement a tester object
+  //TODO trigger relay
+}
+/*
+End of commands
+ */
+void FiringModule::send(int code)
+{
+  String command = String("e ") + String(errorCode);
+  //send to master
+  _radio->send(command, 0);
+}
+void FiringModule::send(Message msg)
+{
+  _radio->send(&msg);
+}
+Cues* getCues()
+{
+  return _cues;
+}
 FiringModule::~FiringModule()
 {
-
+  delete _radio;
+  delete _show;
+  delete _cues;
 }

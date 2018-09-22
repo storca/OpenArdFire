@@ -1,0 +1,121 @@
+\hypertarget{class_message}{}\section{Message Class Reference}
+\label{class_message}\index{Message@{Message}}
+
+
+Collaboration diagram for Message\+:
+% FIG 0
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{struct_message_1_1message}{message}
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_message_a917d33658059b92ef6fe29f523cfc3d3}{Message} (unsigned int device\+Address)
+\item 
+void \hyperlink{class_message_a05999d64722c0f0149391b684db391d0}{set\+Message} (String msg)
+\item 
+void \hyperlink{class_message_af187cbc29c2aa424efe7e442699cd167}{set\+Command} (String command, String receiver)
+\item 
+String \hyperlink{class_message_a50d4906b755edfcee40cb5f80fe4ac32}{get\+Message} ()
+\item 
+String \hyperlink{class_message_ac430b803b41d61f232a2bbfbba660623}{encode\+Message} (String command, String receiver)
+\item 
+String \hyperlink{class_message_a89957e73ddc9c7ecf3f79901a09e47ca}{split\+Command} (int argument)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_message_a17a538ab0649f75f6a5f84ed384fafbb}\label{class_message_a17a538ab0649f75f6a5f84ed384fafbb}} 
+struct \hyperlink{struct_message_1_1message}{message} {\bfseries msg}
+\item 
+\mbox{\Hypertarget{class_message_ae1b021db8bff675a1709dda1e2037385}\label{class_message_ae1b021db8bff675a1709dda1e2037385}} 
+unsigned int {\bfseries device\+Address}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_message_a917d33658059b92ef6fe29f523cfc3d3}\label{class_message_a917d33658059b92ef6fe29f523cfc3d3}} 
+\index{Message@{Message}!Message@{Message}}
+\index{Message@{Message}!Message@{Message}}
+\subsubsection{\texorpdfstring{Message()}{Message()}}
+{\footnotesize\ttfamily Message\+::\+Message (\begin{DoxyParamCaption}\item[{unsigned int}]{device\+Address }\end{DoxyParamCaption})}
+
+New message object 
+\begin{DoxyParams}{Parameters}
+{\em msg} & \hyperlink{class_message}{Message} to process \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_message_ac430b803b41d61f232a2bbfbba660623}\label{class_message_ac430b803b41d61f232a2bbfbba660623}} 
+\index{Message@{Message}!encode\+Message@{encode\+Message}}
+\index{encode\+Message@{encode\+Message}!Message@{Message}}
+\subsubsection{\texorpdfstring{encode\+Message()}{encodeMessage()}}
+{\footnotesize\ttfamily String Message\+::encode\+Message (\begin{DoxyParamCaption}\item[{String}]{command,  }\item[{String}]{receiver }\end{DoxyParamCaption})}
+
+Encode a message with the protocol 
+\begin{DoxyParams}{Parameters}
+{\em command} & Command to send with its arguments \\
+\hline
+{\em receiver} & Receiver address \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Encoded message 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_message_a50d4906b755edfcee40cb5f80fe4ac32}\label{class_message_a50d4906b755edfcee40cb5f80fe4ac32}} 
+\index{Message@{Message}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!Message@{Message}}
+\subsubsection{\texorpdfstring{get\+Message()}{getMessage()}}
+{\footnotesize\ttfamily String Message\+::get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Get message that has been processed \begin{DoxyReturn}{Returns}
+\hyperlink{class_message}{Message} that has been processed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_message_af187cbc29c2aa424efe7e442699cd167}\label{class_message_af187cbc29c2aa424efe7e442699cd167}} 
+\index{Message@{Message}!set\+Command@{set\+Command}}
+\index{set\+Command@{set\+Command}!Message@{Message}}
+\subsubsection{\texorpdfstring{set\+Command()}{setCommand()}}
+{\footnotesize\ttfamily void Message\+::set\+Command (\begin{DoxyParamCaption}\item[{String}]{command,  }\item[{String}]{receiver }\end{DoxyParamCaption})}
+
+Encode a command 
+\begin{DoxyParams}{Parameters}
+{\em msg} & command to encode \\
+\hline
+{\em receiver} & destination \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_message_a05999d64722c0f0149391b684db391d0}\label{class_message_a05999d64722c0f0149391b684db391d0}} 
+\index{Message@{Message}!set\+Message@{set\+Message}}
+\index{set\+Message@{set\+Message}!Message@{Message}}
+\subsubsection{\texorpdfstring{set\+Message()}{setMessage()}}
+{\footnotesize\ttfamily void Message\+::set\+Message (\begin{DoxyParamCaption}\item[{String}]{msg }\end{DoxyParamCaption})}
+
+Set encoded message to decode 
+\begin{DoxyParams}{Parameters}
+{\em msg} & \hyperlink{class_message}{Message} to process \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_message_a89957e73ddc9c7ecf3f79901a09e47ca}\label{class_message_a89957e73ddc9c7ecf3f79901a09e47ca}} 
+\index{Message@{Message}!split\+Command@{split\+Command}}
+\index{split\+Command@{split\+Command}!Message@{Message}}
+\subsubsection{\texorpdfstring{split\+Command()}{splitCommand()}}
+{\footnotesize\ttfamily String Message\+::split\+Command (\begin{DoxyParamCaption}\item[{int}]{argument }\end{DoxyParamCaption})}
+
+Take arguments from command 
+\begin{DoxyParams}{Parameters}
+{\em argument} & argument row \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+selected argument if available 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Message/Message.\+h\item 
+lib/\+Message/Message.\+cpp\end{DoxyCompactItemize}

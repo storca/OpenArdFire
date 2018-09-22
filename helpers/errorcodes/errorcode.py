@@ -1,8 +1,5 @@
-'''
-This helper manages error codes and provide cli interface
-with errors descriptions
-'''
-
+#!/usr/bin/python3
+#Use only with python3
 import sys
 import os
 

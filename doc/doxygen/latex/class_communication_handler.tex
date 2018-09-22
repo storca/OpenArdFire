@@ -1,0 +1,71 @@
+\hypertarget{class_communication_handler}{}\section{Communication\+Handler Class Reference}
+\label{class_communication_handler}\index{Communication\+Handler@{Communication\+Handler}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_communication_handler_a93c704605504708b1a5bbc687eae0036}\label{class_communication_handler_a93c704605504708b1a5bbc687eae0036}} 
+{\bfseries Communication\+Handler} (Hardware\+Serial $\ast$s, Software\+Serial $\ast$rf, unsigned int device\+Address)
+\item 
+void \hyperlink{class_communication_handler_a46bfbaf36bbe568f21e7d8b144785c93}{handler} ()
+\item 
+void \hyperlink{class_communication_handler_aac8445340aa425833ba870ddec125a1a}{print} (int error\+Code, int to)
+\item 
+void \hyperlink{class_communication_handler_a46989cd4824801824ac16afde03677d3}{print} (const char $\ast$msg, int to)
+\item 
+String \hyperlink{class_communication_handler_a7df59cf37a78cd4d77e7e9aec9b1ed32}{get\+Command} (int from)
+\end{DoxyCompactItemize}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{class_communication_handler_a7df59cf37a78cd4d77e7e9aec9b1ed32}\label{class_communication_handler_a7df59cf37a78cd4d77e7e9aec9b1ed32}} 
+\index{Communication\+Handler@{Communication\+Handler}!get\+Command@{get\+Command}}
+\index{get\+Command@{get\+Command}!Communication\+Handler@{Communication\+Handler}}
+\subsubsection{\texorpdfstring{get\+Command()}{getCommand()}}
+{\footnotesize\ttfamily String Communication\+Handler\+::get\+Command (\begin{DoxyParamCaption}\item[{int}]{from }\end{DoxyParamCaption})}
+
+Get a command from a device 
+\begin{DoxyParams}{Parameters}
+{\em from} & Local or Radio \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A command from a device (unencoded) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_communication_handler_a46bfbaf36bbe568f21e7d8b144785c93}\label{class_communication_handler_a46bfbaf36bbe568f21e7d8b144785c93}} 
+\index{Communication\+Handler@{Communication\+Handler}!handler@{handler}}
+\index{handler@{handler}!Communication\+Handler@{Communication\+Handler}}
+\subsubsection{\texorpdfstring{handler()}{handler()}}
+{\footnotesize\ttfamily void Communication\+Handler\+::handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Handles serial communications, call this function in loop \mbox{\Hypertarget{class_communication_handler_aac8445340aa425833ba870ddec125a1a}\label{class_communication_handler_aac8445340aa425833ba870ddec125a1a}} 
+\index{Communication\+Handler@{Communication\+Handler}!print@{print}}
+\index{print@{print}!Communication\+Handler@{Communication\+Handler}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void Communication\+Handler\+::print (\begin{DoxyParamCaption}\item[{int}]{error\+Code,  }\item[{int}]{to }\end{DoxyParamCaption})}
+
+Send error code to specified Serial 
+\begin{DoxyParams}{Parameters}
+{\em error\+Code} & error code \\
+\hline
+{\em to} & destination \+: Local, Radio, Both \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_communication_handler_a46989cd4824801824ac16afde03677d3}\label{class_communication_handler_a46989cd4824801824ac16afde03677d3}} 
+\index{Communication\+Handler@{Communication\+Handler}!print@{print}}
+\index{print@{print}!Communication\+Handler@{Communication\+Handler}}
+\subsubsection{\texorpdfstring{print()}{print()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void Communication\+Handler\+::print (\begin{DoxyParamCaption}\item[{const char $\ast$}]{msg,  }\item[{int}]{to }\end{DoxyParamCaption})}
+
+Print a message to specified serial 
+\begin{DoxyParams}{Parameters}
+{\em msg} & message to send \\
+\hline
+{\em to} & destination \+: Local, Radio, Both \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+lib/\+Communication\+Handler/Communication\+Handler.\+h\item 
+lib/\+Communication\+Handler/Communication\+Handler.\+cpp\end{DoxyCompactItemize}
