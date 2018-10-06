@@ -3,10 +3,11 @@
  * New set of cues on the specified MCPs
  * @param usableCues Number of pins from the MCP that will be used as cues
  */
-Cues::Cues(uint8_t usableCues)
+Cues::Cues(uint8_t usableCues, uint8_t relay_pin)
 {
   _nbOfCues = new const uint8_t(usableCues);
   _cues = new uint32_t[*_nbOfCues];
+  _test_relay = new const int(relay_pin);
   init();
 }
 
@@ -38,7 +39,8 @@ void Cues::handler()
   {
     if(_cues[i] > millis())
     {
-      setMcp(i, LOW);
+      //i+1 because it's a cue
+      setMcp(i+1, LOW);
     }
   }
 }
@@ -64,7 +66,7 @@ void Cues::set(uint8_t cue, bool value)
 void Cues::setMcp(uint8_t cue, bool value, bool notACue)
 {
   //Do not trigger a cue that is higher than the usable cues
-  //Trigger othewise if notACue is set to true
+  //Trigger otherwise if notACue is set to true
   if(cue > *_nbOfCues && !notACue)
   {
     return;
@@ -77,7 +79,7 @@ void Cues::setMcp(uint8_t cue, bool value, bool notACue)
   }
   //Decrement one to use this to select MCP
   //Because if cue <= 16, will return 1,
-  //but the actual mpc to trigger is _mcps[0]
+  //but the actual mcp to trigger is _mcps[0]
   mcpToTrigger--;
 
   //Little formula here that returns the pin to trigger on MCP
@@ -97,7 +99,7 @@ void Cues::trigger(uint8_t cue)
 {
   //Do not trigger a cue that is higher than the usable cues
   //Do not trigger if security is enabled
-  if(cue > *_nbOfCues || !_security)
+  if(cue > *_nbOfCues || _security)
   {
     return;
   }
@@ -117,11 +119,6 @@ const uint8_t* Cues::getNumberOfCues()
 {
   return _nbOfCues;
 }
-Cues::~Cues()
-{
-  delete this->_cues;
-  delete _mcps;
-}
 /**
  * Authorise cue triggering
  * @param status autorise = true
@@ -138,4 +135,66 @@ void Cues::authorise(bool status)
 bool Cues::authorised()
 {
   return !_security;
+}
+/**
+ * @brief Begin cue testing
+ * Triggers test relay and ensure the security is enabled
+ * 
+ */
+void Cues::begin_test()
+{
+  //Enable relay
+  digitalWrite(*_test_relay, LOW);
+  //Enable testing
+  _testing = true;
+  //Enable security
+  //Avoid triggering cues while testing
+  _security = true;
+}
+/**
+ * @brief Test a cue if testing enabled
+ * _Sets any cue to the state given, ensures the system is secured_
+ * 
+ * @param cue Cue to test
+ * @param state State to set on the cue (HIGH/LOW)
+ * @return true State set succefull
+ * @return false Unable to set state of the cue
+ */
+bool Cues::test(uint8_t cue, bool state)
+{
+  if(_testing)
+  {
+    setMcp(cue, state);
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+/**
+ * @brief End cue test
+ * Enables security
+ * 
+ */
+void Cues::end_test()
+{ 
+  //Make sure all cues are set to LOW
+  for(size_t i=0; i<*_nbOfCues; i++)
+  {
+    setMcp(i+1, LOW);
+  }
+  //Keep security enabled
+  _security = true;
+  //Disable testing
+  _testing = false;
+  //Disable relay
+  digitalWrite(*_test_relay, HIGH);
+
+}
+Cues::~Cues()
+{
+  delete this->_cues;
+  delete _mcps;
+  delete _test_relay;
 }

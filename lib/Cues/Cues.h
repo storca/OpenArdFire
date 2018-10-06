@@ -26,13 +26,18 @@ NOTE : trigger(0) will not work, this function takes cue _numbers_ (from 1 to an
 class Cues
 {
 public:
-  Cues(uint8_t usableCues);
+  Cues(uint8_t usableCues, uint8_t relay_pin);
 
   void handler();
   void authorise(bool status);
   bool authorised();
   void trigger(uint8_t cue);
   void set(uint8_t pin, bool value);
+
+  void begin_test();
+  bool test(uint8_t cue, bool state);
+  void end_test();
+
   const uint8_t* getNumberOfCues();
 
   ~Cues();
@@ -46,6 +51,10 @@ private:
   bool _security = true;
   //Number of cues max 128
   const uint8_t *_nbOfCues;
+
+  //Is test relay enabled ?
+  bool _testing = false;
+  const int *_test_relay;
 
   //Stores cues on time
   // For example : when a cue was turned on at a time t,
