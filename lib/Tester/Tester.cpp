@@ -2,7 +2,7 @@
 /**
  * @file Tester.cpp
  * @author Storca (storca@mail.com)
- * @brief Tester source
+ * @brief Class used to test cues without slowing down with delay()
  * @version 0.1
  * @date 2018-10-07
  * 
@@ -153,6 +153,7 @@ bool Tester::get_test_status()
 }
 /**
  * @brief Checks if a cue is operational
+ * 
  * _If the current flows through the igniter and back to the system_
  * 
  * @param cue Cue to monitor
@@ -168,6 +169,7 @@ bool Tester::get_result(uint8_t cue)
 }
 /**
  * @brief Returns all the results of the measurements
+ * 
  * _If the current flows through the igniter and back to the system_
  * 
  * @return true Cue is operational 

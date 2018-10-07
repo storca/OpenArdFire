@@ -8,14 +8,25 @@
 //Let's say that we'd like to use 35 cues out of the 48 available
 Cues *myCues;
 
+//Set our test relay
+struct Cues::Relay myRelay = {9, LOW};
+
 void setup()
 {
 
   //New object
-  myCues = new Cues(35);
+  myCues = new Cues(35, &myRelay);
 
   //In milliseconds, by default 500ms
   myCues->_onTime = 2000;
+  
+  myCues->begin_test();
+  myCues->test(34, HIGH);
+  //This is where we use digitalRead() function
+  //In order to know if the current if flowing through the igniter
+  delay(1000);
+  myCues->test(34, LOW);
+  myCues->end_test();
 
   //Authorise cue triggering
   myCues->authorise(true);

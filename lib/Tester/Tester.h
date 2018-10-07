@@ -18,7 +18,9 @@
 #include <ErrorCodes.h>
 
 /**
- * @brief Tester object
+ * @brief This class is used to test the firing module's cues.
+ * 
+ * It can test single or multiple cues one by one
  * 
  */
 class Tester
@@ -33,11 +35,13 @@ public:
   bool* get_results();
   ~Tester();
 
-  //How long does the measurement last
+  /**
+   * @brief How long does the measurement last in milliseconds
+   * 
+   */
   int measurement_duration = 300;
 
 private:
-  //Test type
   enum {Single, Multiple};
 
   FiringModule *_parent;

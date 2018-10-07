@@ -12,7 +12,7 @@ The folowing project is in developpement, no detailed documentation has already 
 Install Doxygen
 
     apt update
-    apt install doxygen
+    apt install doxygen graphviz
 
 Clone the repository
 

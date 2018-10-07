@@ -14,17 +14,19 @@
  * New set of cues on the specified MCPs
  * @param usableCues Number of pins from the MCP that will be used as cues
  */
-Cues::Cues(uint8_t usableCues, uint8_t relay_pin)
+Cues::Cues(uint8_t usableCues, Relay *test_relay)
 {
   _nbOfCues = new const uint8_t(usableCues);
   _cues = new uint32_t[*_nbOfCues];
-  _test_relay = new const int(relay_pin);
+  _test_relay = test_relay;
   init();
 }
 
 
 void Cues::init()
 {
+  //Set relay pin as output
+  pinMode(_test_relay->pin, OUTPUT);
   //Get the bytes from macro
   byte mcpAddresses[] = C_MCPS;
 
@@ -151,11 +153,13 @@ bool Cues::authorised()
  * @brief Begin cue testing
  * Triggers test relay and ensure the security is enabled
  * 
+ * Sets the variable _testing to true
+ * 
  */
 void Cues::begin_test()
 {
   //Enable relay
-  digitalWrite(*_test_relay, LOW);
+  digitalWrite(_test_relay->pin, _test_relay->state);
   //Enable testing
   _testing = true;
   //Enable security
@@ -185,7 +189,10 @@ bool Cues::test(uint8_t cue, bool state)
 }
 /**
  * @brief End cue test
- * Enables security
+ * 
+ * Makes sure all the cues are set to LOW,
+ * leaves the system with it's security enabled,
+ * make sure to disable it with authorise()
  * 
  */
 void Cues::end_test()
@@ -200,7 +207,7 @@ void Cues::end_test()
   //Disable testing
   _testing = false;
   //Disable relay
-  digitalWrite(*_test_relay, HIGH);
+  digitalWrite(_test_relay->pin, !_test_relay->state);
 
 }
 Cues::~Cues()
