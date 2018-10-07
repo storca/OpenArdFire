@@ -1,17 +1,34 @@
 #include "FiringModule.h"
 
-FiringModule::FiringModule(int address, int usable_cues)
+/**
+ * @brief Construct a new Firing Module:: Firing Module object
+ * 
+ * @param address Address of the firing module
+ * 
+ * Which address the firing module has on the subnetwork
+ * @param usable_cues How much cues do we use
+ * @param testRelay The test relay we use
+ */
+FiringModule::FiringModule(int address, int usable_cues, Cues::Relay *testRelay)
 : _address(address),
-  _usable_cues(usable_cues)
+  _usable_cues(usable_cues),
+  _test_relay(testRelay)
 {
   //Set up cues and show object
-  _cues = new Cues(usable_cues);
+  _cues = new Cues(_usable_cues, _test_relay);
   _show = new Show(_cues);
 
   //Set up rf communications
   _radio = new CRadio();
   _radio->begin(_address);
+  _mymsg = new Message(_address);
 }
+/**
+ * @brief Handles things
+ * 
+ * Has to be called in loop()
+ * 
+ */
 void FiringModule::handler()
 {
   //Call the handlers
@@ -25,6 +42,11 @@ void FiringModule::handler()
     processMessage(_radio->getMessage());
   }
 }
+/**
+ * @brief Process incoming message
+ * 
+ * @param msg Message to process
+ */
 void FiringModule::processMessage(Message msg)
 {
   String cmd;
@@ -62,6 +84,12 @@ void FiringModule::processMessage(Message msg)
 /*
 ------------------Commands
  */
+
+
+/**
+ * @brief Send info about the system
+ * 
+ */
 void FiringModule::info()
 {
   String infoStr = "info ";
@@ -73,11 +101,22 @@ void FiringModule::info()
   msg.encodeMessage(infoStr, "0");
   send(msg);
 }
+/**
+ * @brief Performs selfchecks
+ * 
+ * _Not used for now, may be usefull in the future_
+ * 
+ */
 void FiringModule::selfcheck()
 {
   //TODO : check securities here
   send(CODE_OK);
 }
+/**
+ * @brief Test cues with the message sent
+ * 
+ * @param msg Details about what cue(s) to test
+ */
 void FiringModule::testCues(Message msg)
 {
   //TODO trigger relay
@@ -88,20 +127,47 @@ void FiringModule::testCues(Message msg)
 /*
 End of commands
  */
+
+/**
+ * @brief Send error code to master
+ * 
+ * @param code Error code to send
+ * 
+ * Error codes are defined in ErrorCodes.h<br>
+ * To add one, please use the python script located in 
+ * /helpers/errorcodes/errocode.py
+ */
 void FiringModule::send(int code)
 {
   String command = String("e ") + String(code);
   //send to master
   _radio->send(command, 0);
 }
+/**
+ * @brief Send any message to any device
+ * 
+ * @param msg 
+ */
 void FiringModule::send(Message msg)
 {
   _radio->send(&msg);
 }
+/**
+ * @brief Get private _cues object
+ * 
+ * @return Cues* 
+ */
 Cues* FiringModule::getCues()
 {
   return _cues;
 }
+/**
+ * @brief Split a string
+ * 
+ * @param s String to split
+ * @param row Part of the array to return
+ * @return String Splitted string s[row]
+ */
 String FiringModule::splitstr(String s, int row)
 {
   String textToReturn = "";
@@ -135,6 +201,10 @@ String FiringModule::splitstr(String s, int row)
   }
   return textToReturn;
 }
+/**
+ * @brief Destroy the Firing Module:: Firing Module object
+ * 
+ */
 FiringModule::~FiringModule()
 {
   delete _radio;

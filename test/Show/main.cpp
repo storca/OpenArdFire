@@ -2,8 +2,9 @@
 #include <Cues.h>
 #include <Show.h>
 
+struct Cues::Relay myrelay = {9, HIGH};
 
-Cues myCues(32);
+Cues myCues(32, &myrelay);
 Show myShow(&myCues);
 
 void setup()

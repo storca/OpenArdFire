@@ -15,7 +15,7 @@ class FiringModule
 {
 public:
     //Methods
-    FiringModule(int address, int usable_cues);
+    FiringModule(int address, int usable_cues, Cues::Relay *testRelay);
     void send(int code);
     void send(Message msg);
     void processMessage(Message msg);
@@ -27,15 +27,16 @@ public:
     void selfcheck();
     void testCues(Message msg);
 
-    //Constants FIXME: actually use constants
-    int _address;
+    //Constants
+    const int _address;
     const int _usable_cues;
 
     //Cue-related objects
+    struct Cues::Relay *_test_relay;
     Cues *_cues;
     Show *_show;
 
-    //Communication object
+    //Communication objects
     CRadio *_radio;
     Message *_mymsg;
 

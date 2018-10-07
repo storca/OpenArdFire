@@ -30,6 +30,8 @@ Tester::Tester(FiringModule *parent, uint8_t testpin)
   //Set pin as input pullup
   //DOUBLE CHECK: if it's a pullup and not a pulldown
   pinMode(testpin, INPUT_PULLUP);
+  //cppcheck compilance
+  _current_cue = 0;
 }
 /**
  * @brief Test all the cues
