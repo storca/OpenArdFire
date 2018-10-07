@@ -7,4 +7,26 @@
 
 The folowing project is in developpement, no detailed documentation has already been made.
 
+### Build the docs
+
+Install Doxygen
+
+    apt update
+    apt install doxygen
+
+Clone the repository
+
+    git clone https://github.com/storca/OpenArdFire.git
+    cd OpenArdFire
+
+Make the docs
+
+    doxygen
+
+Open them
+
+    cd doc/html
+    firefox index.html 
+    
+
 You may check the [wiki](https://github.com/storca/OpenArdFire/wiki) to find more information.

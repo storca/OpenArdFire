@@ -1,3 +1,14 @@
+//Tester.cpp
+/**
+ * @file Tester.cpp
+ * @author Storca (storca@mail.com)
+ * @brief Tester source
+ * @version 0.1
+ * @date 2018-10-07
+ * 
+ * @copyright Copyright (c) 2018
+ * 
+ */
 #include "Tester.h"
 
 /**
@@ -48,6 +59,13 @@ bool Tester::test_all()
     _cues->test(_current_cue+1, HIGH);
   }
 }
+/**
+ * @brief Test a single cue
+ * 
+ * @param cue Cue to test
+ * @return true if test is running
+ * @return false if test is not able to run
+ */
 bool Tester::test(uint8_t cue)
 {
   if(_test_running)

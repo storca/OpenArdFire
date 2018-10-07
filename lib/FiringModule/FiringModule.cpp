@@ -1,10 +1,9 @@
 #include "FiringModule.h"
 
 FiringModule::FiringModule(int address, int usable_cues)
+: _address(address),
+  _usable_cues(usable_cues)
 {
-  _address = address;
-  _usable_cues = usable_cues;
-
   //Set up cues and show object
   _cues = new Cues(usable_cues);
   _show = new Show(_cues);
@@ -26,10 +25,10 @@ void FiringModule::handler()
     processMessage(_radio->getMessage());
   }
 }
-void processMessage(Message msg)
+void FiringModule::processMessage(Message msg)
 {
   String cmd;
-  cmd = splitCommand(msg.msg.command, 0);
+  cmd = splitstr(msg.msg.command, 0);
 
   //Check if command is valid
   if(cmd == "ping")
@@ -67,10 +66,12 @@ void FiringModule::info()
 {
   String infoStr = "info ";
   //Add version
-  infoStr += String(FM_VERSION)
+  infoStr += String(FM_VERSION);
   infoStr += String(" ");
   //Send it
-  send(infoStr);
+  Message msg(_address);
+  msg.encodeMessage(infoStr, "0");
+  send(msg);
 }
 void FiringModule::selfcheck()
 {
@@ -89,7 +90,7 @@ End of commands
  */
 void FiringModule::send(int code)
 {
-  String command = String("e ") + String(errorCode);
+  String command = String("e ") + String(code);
   //send to master
   _radio->send(command, 0);
 }
@@ -97,9 +98,42 @@ void FiringModule::send(Message msg)
 {
   _radio->send(&msg);
 }
-Cues* getCues()
+Cues* FiringModule::getCues()
 {
   return _cues;
+}
+String FiringModule::splitstr(String s, int row)
+{
+  String textToReturn = "";
+
+  //Iterate over characters
+  int i = 0;
+  //Iterate over words
+  int i2 = 0;
+
+  int maxLength = s.length();
+
+  while(i2 != row)
+  {
+    textToReturn = "";
+    while(s[i] != '\0' && s[i] != 32)
+      {
+        textToReturn += s[i];
+        i++;
+        if(i > maxLength)
+        {
+          return String("Command is too long");
+        }
+      }
+      i++;
+      //Skip the spaces
+      while(s[i] == 32)
+        {
+          i++;
+        }
+      i2++;
+  }
+  return textToReturn;
 }
 FiringModule::~FiringModule()
 {

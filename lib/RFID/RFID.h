@@ -9,7 +9,6 @@ tags variable has to be an unsigned long long (or unsigned int_64)
 #include <Arduino.h>
 #include <SoftwareSerial.h>
 #include <RDM6300.h>
-#include <Logging.h>
 #include <FiringModule.h>
 
 #define RFID_MAX_TAGS 3

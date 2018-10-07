@@ -1,6 +1,5 @@
 #ifndef CUES_H
 #define CUES_H
-
 /*
 This library is the ♥ of satelites, it is this library that
 has physical impact on igniters :)

@@ -1,7 +1,7 @@
 #ifndef SHOW_H
 #define SHOW_H
 
-#include <EEPROMEx.h>
+#include <EEPROMex.h>
 #include <Cues.h>
 
 /*

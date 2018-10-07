@@ -1,8 +1,26 @@
+/**
+ * @file Tester.h
+ * @author Storca (storca@mail.com)
+ * @brief A class that handles single or multiple cue testing
+ * @version 0.1
+ * @date 2018-10-07
+ * 
+ * @copyright Copyright (c) 2018
+ * 
+ */
+
+#ifndef TESTER_H
+#define TESTER_H
+
 #include <Arduino.h>
 #include <Cues.h>
 #include <FiringModule.h>
 #include <ErrorCodes.h>
 
+/**
+ * @brief Tester object
+ * 
+ */
 class Tester
 {
 public:
@@ -31,3 +49,5 @@ private:
   unsigned long next_measurement;
   bool *_measurements;
 };
+
+#endif

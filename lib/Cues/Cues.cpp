@@ -1,3 +1,14 @@
+/**
+ * @file Cues.cpp
+ * @author Storca (storca@mail.com)
+ * @brief Handles cue timing without calling delay() function
+ * @version 0.1
+ * @date 2018-10-07
+ * 
+ * @copyright Copyright (c) 2018
+ * 
+ */
+
 #include "Cues.h"
 /**
  * New set of cues on the specified MCPs
