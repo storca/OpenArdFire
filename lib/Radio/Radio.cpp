@@ -2,7 +2,8 @@
 /**
  * Radio Ctor
  */
-CRadio::CRadio()
+CRadio::CRadio(int channel_given)
+: channel(channel_given)
 {
   _sendBuffer = new String();
   _receiveBuffer = new String();
@@ -12,11 +13,10 @@ CRadio::CRadio()
  * @param  rfchannel channel
  * @return           true if success
  */
-bool CRadio::begin(uint8_t rfchannel)
+bool CRadio::begin()
 {
-  if (rfchannel > -1 && rfchannel < 256)
+  if (channel > -1 && channel < 256)
   {
-    channel = rfchannel;
     Mirf.cePin = 9;
     Mirf.csnPin = 10;
     Mirf.spi = &MirfHardwareSpi;
@@ -27,7 +27,7 @@ bool CRadio::begin(uint8_t rfchannel)
     Mirf.payload = RF_PACKET_SIZE;
     Mirf.config();
 
-    setReceiveAddress(rfchannel);
+    setReceiveAddress(channel);
 
     return true;
   }
@@ -43,7 +43,7 @@ void CRadio::handler()
     //We can send data
     byte packet[RF_PACKET_SIZE];
 
-    for (size_t i = 0; i < RF_PACKET_SIZE+1; i++) {
+    for (size_t i = 0; i < RF_PACKET_SIZE; i++) {
       packet[i] = int(_sendBuffer->charAt(i));
     }
     //Remove packet size from buffer

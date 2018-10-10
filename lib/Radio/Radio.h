@@ -22,8 +22,8 @@
 
 class CRadio{
 public:
-  CRadio();
-  bool begin(uint8_t rfchannel);
+  CRadio(int channel_given);
+  bool begin();
   void handler();
   void send(String command, uint8_t receiver);
   void send(Message *msg);
@@ -33,8 +33,7 @@ public:
   bool available();
   ~CRadio();
 
-  //FIXME : has to be a constant
-  uint8_t channel;
+  const int channel;
 private:
   void processPacket(byte packet[RF_PACKET_SIZE]);
   void setSendAddress(uint8_t receiver = 1);
