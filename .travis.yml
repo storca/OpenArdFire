@@ -63,7 +63,7 @@
      - PLATFORMIO_CI_SRC=test/Cues
      - PLATFORMIO_CI_SRC=test/Template
      - PLATFORMIO_CI_SRC=test/Show
-     - PLATFOMRIO_CI_SRC=test/Radio
+     - PLATFORMIO_CI_SRC=test/Radio
 
  install:
      - pip install -U platformio
