@@ -9,18 +9,20 @@
  * @param usable_cues How much cues do we use
  * @param testRelay The test relay we use
  */
-FiringModule::FiringModule(int address, int usable_cues, Cues::Relay *testRelay)
+FiringModule::FiringModule(int address, int usable_cues, int test_pin, Cues::Relay *testRelay)
 : _address(address),
   _usable_cues(usable_cues),
+  _test_pin(test_pin),
   _test_relay(testRelay)
 {
   //Set up cues and show object
   _cues = new Cues(_usable_cues, _test_relay);
   _show = new Show(_cues);
+  _tester = new Tester(this, _test_pin);
 
   //Set up rf communications
-  _radio = new CRadio();
-  _radio->begin(_address);
+  _radio = new CRadio(_address);
+  _radio->begin();
   _mymsg = new Message(_address);
 }
 /**
@@ -34,6 +36,7 @@ void FiringModule::handler()
   //Call the handlers
   _cues->handler();
   _show->handler();
+  _tester->handler();
 
   //Check for incoming message(s)
   if(_radio->available())
@@ -119,10 +122,15 @@ void FiringModule::selfcheck()
  */
 void FiringModule::testCues(Message msg)
 {
-  //TODO trigger relay
-  //TODO check securities
-  //TODO implement a tester object
-  //TODO trigger relay
+  //Message check
+  msg.getMessage();
+  //Set relay to test
+  digitalWrite(_test_relay->pin, _test_relay->state);
+  
+  
+
+  //Set relay to firing mode
+  digitalWrite(_test_relay->pin, !_test_relay->state);
 }
 /*
 End of commands
@@ -210,4 +218,5 @@ FiringModule::~FiringModule()
   delete _radio;
   delete _show;
   delete _cues;
+  delete _tester;
 }

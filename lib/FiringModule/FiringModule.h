@@ -3,6 +3,7 @@
 #include <Message.h>
 #include <Cues.h>
 #include <Show.h>
+#include <Tester.h>
 //Generated with helper
 #include "ErrorCodes.h"
 
@@ -15,7 +16,7 @@ class FiringModule
 {
 public:
     //Methods
-    FiringModule(int address, int usable_cues, Cues::Relay *testRelay);
+    FiringModule(int address, int usable_cues, int test_pin, Cues::Relay *testRelay);
     void send(int code);
     void send(Message msg);
     void processMessage(Message msg);
@@ -30,15 +31,17 @@ public:
     //Constants
     const int _address;
     const int _usable_cues;
+    const int _test_pin;
 
     //Cue-related objects
     struct Cues::Relay *_test_relay;
     Cues *_cues;
     Show *_show;
 
-    //Communication objects
+    //Custom objects
     CRadio *_radio;
     Message *_mymsg;
+    Tester *_tester;
 
     //Securities
     bool test_authorised = false;

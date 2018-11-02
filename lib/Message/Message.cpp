@@ -27,7 +27,9 @@ void Message::setMessage(String msg)
  */
 void Message::setCommand(String command, String receiver)
 {
+  //Encode the message
   _msgToProcess = encodeMessage(command, receiver);
+  //Process it and store the treated data in Message::msg member
   process();
 }
 /**
@@ -64,7 +66,8 @@ String Message::encodeMessage(String command, String receiver)
   return result;
 }
 /**
- * Process the given message
+ * Process the given message and store it in the public
+ * Message::msg member
  * @param maxMsgLen Max message length
  */
 void Message::process(int maxMsgLen)
