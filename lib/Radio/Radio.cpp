@@ -61,11 +61,11 @@ void CRadio::handler()
 }
 //NOTE : The two next funtions are here to
 //handle addresses greater than 255 if needed
-void setSendAddress(uint8_t receiver)
+void CRadio::setSendAddress(uint8_t receiver)
 {
   Mirf.setTADDR(&receiver);
 }
-void setReceiveAddress(uint8_t me)
+void CRadio::setReceiveAddress(uint8_t me)
 {
   Mirf.setRADDR(&me);
 }
