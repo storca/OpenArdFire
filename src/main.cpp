@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <Tester.h>
 #include <FiringModule.h>
 #include <CommunicationHandler.h>
 #include <RFID.h>

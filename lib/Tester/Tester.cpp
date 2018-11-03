@@ -9,6 +9,8 @@
  * @copyright Copyright (c) 2018
  * 
  */
+
+#include <FiringModule.h>
 #include "Tester.h"
 
 /**
@@ -17,7 +19,7 @@
  * @param parent 
  * @param testpin Where is attached the test output
  */
-Tester::Tester(FiringModule *parent, uint8_t testpin)
+Tester::Tester(FiringModule *parent, const int testpin)
 {
   //Set parent
   _parent = parent;
@@ -43,6 +45,7 @@ bool Tester::test_all()
   if(_parent->_show->running())
   {
     _parent->send(CODE_UNABLE_TO_TEST);
+    return false;
   }
   else if(_parent->test_authorised)
   {
@@ -59,6 +62,7 @@ bool Tester::test_all()
     _cues->begin_test();
     next_measurement = millis() + measurement_duration;
     _cues->test(_current_cue+1, HIGH);
+    return true;
   }
 }
 /**
@@ -94,7 +98,10 @@ bool Tester::test(uint8_t cue)
     _cues->begin_test();
     next_measurement = millis() + measurement_duration;
     _cues->test(_current_cue+1, HIGH);
+
+    return true;
   }
+  return false;
 }
 /**
  * @brief Handles tests when needed

@@ -1,3 +1,6 @@
+#ifndef FIRING_MODULE_H
+#define FIRING_MODULE_H
+
 #include <Arduino.h>
 #include <Radio.h>
 #include <Message.h>
@@ -7,9 +10,6 @@
 //Generated with helper
 #include "ErrorCodes.h"
 
-#ifndef FIRING_MODULE_H
-
-#define FIRING_MODULE_H
 //Beta
 #define FM_VERSION 0
 class FiringModule

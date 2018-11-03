@@ -14,7 +14,6 @@
 
 #include <Arduino.h>
 #include <Cues.h>
-#include <FiringModule.h>
 #include <ErrorCodes.h>
 
 /**
@@ -23,10 +22,15 @@
  * It can test single or multiple cues one by one
  * 
  */
+
+//Forward declaration of FiringModule
+//https://stackoverflow.com/questions/1429336/cross-referencing-included-headers-in-c-program
+class FiringModule;
+
 class Tester
 {
 public:
-  Tester(FiringModule *parent, uint8_t testPin);
+  Tester(FiringModule *parent, const int testPin);
   bool test_all();
   bool test(uint8_t cue);
   void handler();
