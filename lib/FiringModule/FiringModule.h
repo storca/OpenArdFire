@@ -7,12 +7,13 @@
 #include <Cues.h>
 #include <Show.h>
 #include <Tester.h>
+#include <Module.h>
 //Generated with helper
 #include "ErrorCodes.h"
 
 //Beta
 #define FM_VERSION 0
-class FiringModule
+class FiringModule : public Module
 {
 public:
     //Methods
@@ -42,13 +43,6 @@ public:
     CRadio *_radio;
     Message *_mymsg;
     Tester *_tester;
-
-    //Securities
-    bool test_authorised = false;
-    bool show_authorised = false;
-
-    //Status Variables
-    bool show_running = false;
 
 private:
   void handler();

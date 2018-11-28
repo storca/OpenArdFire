@@ -55,22 +55,41 @@ bool Show::import(int address)
   return false;
 }
 /**
+ * @brief Allow or prevent the show from starting
+ * 
+ * @param is_show_allowed is the show allowed
+ */
+void Show::allow_show(bool is_show_allowed)
+{
+  _is_show_allowed = is_show_allowed;
+}
+/**
  * Start a show with parameters given
  */
-void Show::start()
+int Show::start()
 {
-  if(_cues->authorised())
+  //Is cue triggering possible ?
+  if(!_cues->authorised())
+  {
+    return 2;
+  }
+  else if(!_is_show_allowed)
+  {
+    return 3;
+  }
   {
     _triggeredCues = 0;
     _startTime = millis();
     _running = true;
+
+    return true;
   }
 }
 /**
  * Check if the show is running
  * @return true if running
  */
-bool Show::running()
+bool Show::is_show_running()
 {
   return _running;
 }

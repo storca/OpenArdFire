@@ -18,7 +18,7 @@ FiringModule::FiringModule(int address, int usable_cues, int test_pin, Cues::Rel
   //Set up cues and show object
   _cues = new Cues(_usable_cues, _test_relay);
   _show = new Show(_cues);
-  _tester = new Tester(this, _test_pin);
+  _tester = new Tester(_cues, _test_pin);
 
   //Set up rf communications
   _radio = new CRadio(_address);

@@ -16,8 +16,9 @@ public:
   Show(Cues *cues);
   //void setStartTime(unsigned long startTime);
 
-  void start();
-  bool running();
+  void allow_show(bool);
+  int start();
+  bool is_show_running();
   bool set(uint8_t cue, unsigned long triggerTime);
   bool save(int address);
   bool import(int address);
@@ -35,6 +36,8 @@ private:
   const uint8_t *_nbOfCues;
   //Start time
   unsigned long _startTime;
+  //Allow show to start
+  bool _is_show_allowed = false;
   //Show is running ?
   bool _running = false;
 };

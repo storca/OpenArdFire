@@ -16,19 +16,17 @@
 /**
  * @brief Construct a new Tester:: Tester object
  * 
- * @param parent 
+ * @param cues Cues object as an argument
  * @param testpin Where is attached the test output
  */
-Tester::Tester(FiringModule *parent, const int testpin)
+Tester::Tester(Cues *cues, const int testpin)
 {
-  //Set parent
-  _parent = parent;
-  //Retreive cues
-  _cues = _parent->getCues();
+  //Set cues
+  _cues = cues;
   //Set test pin
   _test_pin = new const int(testpin);
   //Create a array for measurements results
-  _measurements = new bool[_parent->_usable_cues];
+  _measurements = new bool[size_t(_cues->getNumberOfCues())];
   //Set pin as input pullup
   //DOUBLE CHECK: if it's a pullup and not a pulldown
   pinMode(testpin, INPUT_PULLUP);
@@ -38,16 +36,16 @@ Tester::Tester(FiringModule *parent, const int testpin)
 /**
  * @brief Test all the cues
  * 
+ * 
  */
 bool Tester::test_all()
 {
   //If show is running, send error
-  if(_parent->_show->running())
+  if(!_test_allowed)
   {
-    _parent->send(CODE_UNABLE_TO_TEST);
     return false;
   }
-  else if(_parent->test_authorised)
+  else if(_test_allowed)
   {
     //Set the test to running
     _test_running = true;
@@ -56,7 +54,7 @@ bool Tester::test_all()
     //Set the current cue to 0
     _current_cue = 0;
     //Unauthorise the test
-    _parent->test_authorised = false;
+    _test_allowed = false;
 
     //Begin test
     _cues->begin_test();
@@ -79,7 +77,7 @@ bool Tester::test(uint8_t cue)
     //TODO: maybe use errorcodes here?
     return false;
   }
-  else if(!_parent->test_authorised)
+  else if(!_test_allowed)
   {
     return false;
   }
@@ -92,7 +90,7 @@ bool Tester::test(uint8_t cue)
     //Set the cue to test
     _current_cue = cue-1;
     //Unauthorise test
-    _parent->test_authorised = false;
+    _test_allowed = false;
 
     //Begin test
     _cues->begin_test();
@@ -116,7 +114,7 @@ void Tester::handler()
       case Multiple:
         if(millis() > next_measurement)
           {
-            if(_current_cue < _parent->_usable_cues)
+            if(_current_cue < int( _cues->getNumberOfCues() + 1) )
             {
               //Read value
               _measurements[_current_cue] = digitalRead(*_test_pin);
@@ -161,6 +159,15 @@ bool Tester::get_test_status()
   return _test_running;
 }
 /**
+ * @brief Allow or prevent testing
+ * 
+ * @param test_allowed Is test allowed ?
+ */
+void Tester::allow_test(bool test_allowed)
+{
+  _test_allowed = test_allowed;
+}
+/**
  * @brief Checks if a cue is operational
  * 
  * _If the current flows through the igniter and back to the system_
@@ -171,7 +178,7 @@ bool Tester::get_test_status()
  */
 bool Tester::get_result(uint8_t cue)
 {
-  if(cue < _parent->_usable_cues+1)
+  if(cue < int(_cues->getNumberOfCues() + 1) )
   {
     return _measurements[cue-1];
   }

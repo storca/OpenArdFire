@@ -23,18 +23,22 @@
  * 
  */
 
+/*
+Depreceated just for reference lol
 //Forward declaration of FiringModule
 //https://stackoverflow.com/questions/1429336/cross-referencing-included-headers-in-c-program
 class FiringModule;
+*/
 
 class Tester
 {
 public:
-  Tester(FiringModule *parent, const int testPin);
+  Tester(Cues *cues, const int testPin);
   bool test_all();
   bool test(uint8_t cue);
   void handler();
   bool get_test_status();
+  void allow_test(bool test_allowed);
   bool get_result(uint8_t cue);
   bool* get_results();
   ~Tester();
@@ -48,11 +52,11 @@ public:
 private:
   enum {Single, Multiple};
 
-  FiringModule *_parent;
   Cues *_cues;
   const int *_test_pin;
   int _current_cue;
   bool _test_running = false;
+  bool _test_allowed = false;
   bool _test_type;
   unsigned long next_measurement;
   bool *_measurements;
