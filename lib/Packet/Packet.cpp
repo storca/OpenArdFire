@@ -59,7 +59,7 @@ char* Packet::get_buffer()
  * @return true The byte has been appened
  * @return false The byte could not be appened
  */
-bool Packet::append_data(char d)
+bool Packet::append(char d)
 {
     if(3+cursor++ < RF_PACKET_SIZE)
     {
@@ -117,4 +117,137 @@ void Packet::encode_int(char* bytearr, int var)
 void Packet::decode_int(char* bytearr, int *var)
 {
     *var = (unsigned int)(bytearr[1] << 8) | bytearr[0];
+}
+
+/**
+ * @brief Sets the packet object in writing mode
+ * 
+ */
+void Packet::beginWrite()
+{
+    //Set the cursor to -1 so the function append(char) could work properly
+    cursor = -1;
+}
+
+/**
+ * @brief Checks if there is enough space to write a given type
+ * 
+ * @tparam T Type to write
+ * @return true There is enough space
+ * @return false There is no much space :c
+ */
+template <typename T>
+bool Packet::hasEnoughSpace(T)
+{
+    if(cursor + sizeof(T) < RF_PACKET_SIZE)
+    {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * @brief Appends an integer to the packet
+ * 
+ * @param var Integer to append
+ * @return true 
+ * @return false 
+ */
+bool Packet::append(int var)
+{
+    char buff[2];
+
+    encode_int(buff, var);
+
+    for(int i =0; i<2; i++)
+    {
+        if(!append(buff[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Appends a long to the packet
+ * 
+ * @param var Long to append
+ * @return true 
+ * @return false 
+ */
+bool Packet::append(long var)
+{
+    char buff[4];
+
+    encode_long(buff, var);
+
+    for(int i =0; i<4; i++)
+    {
+        if(!append(buff[i]))
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+/**
+ * @brief Sets the packet object in reading mode
+ * 
+ */
+void Packet::beginRead()
+{
+    //Set the cursor so the read function could work as intended
+    //Cursor is 1 here because we only read data
+    //It will be incremented in read() then the array value will be returned
+    cursor = 1;
+}
+/**
+ * @brief Read a single byte from the packet
+ * 
+ * @return char 
+ */
+char Packet::read()
+{
+    if(cursor++ < RF_PACKET_SIZE)
+    {
+        cursor++;
+        return _buffer[cursor];
+    }
+    //Overflowwwww yay
+}
+/**
+ * @brief Reads an integer from the packet
+ * 
+ * @param var 
+ */
+void Packet::read(int *var)
+{
+    //Create a buffer
+    char buff[2];
+    //Copy contents from the packet to the buffer
+    for(int i=0; i<2; i++)
+    {
+        buff[i] = read();
+    }
+    //Decode the variable
+    decode_int(buff, var);
+}
+/**
+ * @brief Reads a long from the packet
+ * 
+ * @param var 
+ */
+void Packet::read(long *var)
+{
+    //Create a buffer
+    char buff[4];
+    //Copy contents from the packet to the buffer
+    for(int i=0; i<4; i++)
+    {
+        buff[i] = read();
+    }
+    //Decode the variable
+    decode_long(buff, var);
 }

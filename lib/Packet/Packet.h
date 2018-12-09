@@ -5,6 +5,7 @@
 #define RF_PACKET_SIZE 32
 #endif
 
+
 /**
  * @brief Parent class of Command class
  * Written in c++ ; so no arduino types
@@ -13,7 +14,7 @@ class Packet
 {
     public:
         Packet();
-        ~Packet();
+        virtual ~Packet();
 
         void sender(char);
         char* sender();
@@ -21,7 +22,18 @@ class Packet
         void receiver(char);
         char* receiver();
 
-        bool append_data(char);
+        void beginWrite();
+        
+        template<typename T>
+        bool hasEnoughSpace(T);
+        bool append(char);
+        bool append(int);
+        bool append(long);
+
+        void beginRead();
+        char read();
+        void read(int*);
+        void read(long*);
 
         char* get_buffer();
 
