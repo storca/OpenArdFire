@@ -1,8 +1,42 @@
 #include "Packet.h"
 
+/**
+ * @brief Construct a new Packet:: Packet object
+ * Write mode is the default mode
+ * 
+ */
 Packet::Packet()
 {
-    cursor = -1;
+    beginWrite();
+}
+/**
+ * @brief Construct a new Packet:: Packet object
+ * with the given mode
+ * 
+ * @param mode The mode to set using Packet::Mode enum
+ */
+Packet::Packet(bool mode)
+{
+    setMode(mode);
+}
+
+/**
+ * @brief Set packet either to write or read mode
+ * Using the Packet::Mode enum
+ * 
+ * @param mode Enum type
+ */
+void Packet::setMode(bool mode)
+{
+    switch(mode)
+    {
+        case Packet::Mode::Read:
+            beginRead();
+        break;
+        case Packet::Mode::Write:
+            beginWrite();
+        break;
+    };
 }
 
 /**
@@ -61,11 +95,18 @@ char* Packet::get_buffer()
  */
 bool Packet::append(char d)
 {
-    if(3+cursor++ < RF_PACKET_SIZE)
+    if(_mode == Packet::Mode::Write)
     {
-        cursor++;
-        _buffer[cursor+3] = d;
-        return true;
+        if(3+cursor++ < RF_PACKET_SIZE)
+        {
+            cursor++;
+            _buffer[cursor+3] = d;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
     else
     {
@@ -136,10 +177,9 @@ void Packet::beginWrite()
  * @return true There is enough space
  * @return false There is no much space :c
  */
-template <typename T>
-bool Packet::hasEnoughSpace(T)
+bool Packet::hasEnoughSpace(unsigned int size)
 {
-    if(cursor + sizeof(T) < RF_PACKET_SIZE)
+    if(cursor + size < RF_PACKET_SIZE)
     {
         return true;
     }
@@ -210,12 +250,20 @@ void Packet::beginRead()
  */
 char Packet::read()
 {
-    if(cursor++ < RF_PACKET_SIZE)
+    if(_mode == Packet::Mode::Read)
     {
-        cursor++;
-        return _buffer[cursor];
+        if(cursor++ < RF_PACKET_SIZE)
+        {
+            cursor++;
+            return _buffer[cursor];
+        }
+        //Overflowwwww yay
+        return false;
     }
-    //Overflowwwww yay
+    else
+    {
+        return false;
+    }
 }
 /**
  * @brief Reads an integer from the packet

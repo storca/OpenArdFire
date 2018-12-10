@@ -12,9 +12,18 @@
  */
 class Packet
 {
+    
     public:
+    enum Mode
+    {
+        Read,
+        Write
+    };
         Packet();
+        Packet(bool mode);
         virtual ~Packet();
+
+        void setMode(bool);
 
         void sender(char);
         char* sender();
@@ -24,8 +33,7 @@ class Packet
 
         void beginWrite();
         
-        template<typename T>
-        bool hasEnoughSpace(T);
+        bool hasEnoughSpace(unsigned int);
         bool append(char);
         bool append(int);
         bool append(long);
@@ -51,6 +59,7 @@ class Packet
 
     private:
         char _buffer[RF_PACKET_SIZE];
+        bool _mode;
         
 };
 
