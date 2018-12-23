@@ -100,7 +100,10 @@ bool Packet::append(char d)
         if(3+cursor++ < RF_PACKET_SIZE)
         {
             cursor++;
+            //Skip the 3 info bytes and write into the current cursor position
             _buffer[cursor+3] = d;
+            //Increase packet size
+            _buffer[0]++;
             return true;
         }
         else
@@ -169,6 +172,8 @@ void Packet::beginWrite()
 {
     //Set the cursor to -1 so the function append(char) could work properly
     cursor = -1;
+    //Set the buffer size to 0
+    _buffer[0] = 0;
 }
 
 /**
@@ -244,6 +249,23 @@ void Packet::beginRead()
     //It will be incremented in read() then the array value will be returned
     cursor = 1;
 }
+
+/**
+ * @brief How much bytes are available for reading<br>
+ * Info bytes not included
+ * 
+ * @return char Bytes left to read
+ */
+char Packet::available()
+{
+    if(_mode == Packet::Mode::Read)
+    {
+        return _buffer[0] - cursor;
+    }
+    else
+        return 0;
+}
+
 /**
  * @brief Read a single byte from the packet
  * 

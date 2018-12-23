@@ -44,6 +44,7 @@ class Packet
         bool append(uint32_t);
 
         void beginRead();
+        char available();
         char read();
         void read(uint16_t*);
         void read(uint32_t*);
