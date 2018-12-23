@@ -110,6 +110,7 @@ bool Packet::append(char d)
     }
     else
     {
+        throw "Packet is in read mode and you are trying to write into it";
         return false;
     }
 }
@@ -120,7 +121,7 @@ bool Packet::append(char d)
  * @param bytearr Buffer of 4 bytes long
  * @param var Long variable to encode
  */
-void Packet::encode_long(char* bytearr, long var)
+void Packet::encode_long(char* bytearr, uint32_t var)
 {
     bytearr[0] = (char) var;
     bytearr[1] = (char) var >> 8;
@@ -133,9 +134,9 @@ void Packet::encode_long(char* bytearr, long var)
  * @param bytearr Byte array to decode
  * @param var Buffer for the long variable
  */
-void Packet::decode_long(char* bytearr, long *var)
+void Packet::decode_long(char* bytearr, uint32_t *var)
 {
-    *var = (unsigned long)(bytearr[3] << 24) | (bytearr[2] << 16) | (bytearr[1] << 8) | bytearr[0];
+    *var = (uint32_t)(bytearr[3] << 24) | (bytearr[2] << 16) | (bytearr[1] << 8) | bytearr[0];
 }
 
 /**
@@ -144,7 +145,7 @@ void Packet::decode_long(char* bytearr, long *var)
  * @param bytearr Buffer to store the integer
  * @param var Integer to encode
  */
-void Packet::encode_int(char* bytearr, int var)
+void Packet::encode_int(char* bytearr, uint16_t var)
 {
     bytearr[0] = (char) var;
     bytearr[1] = (char) var >> 8;
@@ -155,9 +156,9 @@ void Packet::encode_int(char* bytearr, int var)
  * @param bytearr Byte array to decode
  * @param var Buffer for the integer variable
  */
-void Packet::decode_int(char* bytearr, int *var)
+void Packet::decode_int(char* bytearr, uint16_t *var)
 {
-    *var = (unsigned int)(bytearr[1] << 8) | bytearr[0];
+    *var = (uint16_t)(bytearr[1] << 8) | bytearr[0];
 }
 
 /**
@@ -193,7 +194,7 @@ bool Packet::hasEnoughSpace(unsigned int size)
  * @return true 
  * @return false 
  */
-bool Packet::append(int var)
+bool Packet::append(uint16_t var)
 {
     char buff[2];
 
@@ -216,7 +217,7 @@ bool Packet::append(int var)
  * @return true 
  * @return false 
  */
-bool Packet::append(long var)
+bool Packet::append(uint32_t var)
 {
     char buff[4];
 
@@ -262,6 +263,7 @@ char Packet::read()
     }
     else
     {
+        throw "Packet is in write mode and you are trying to read contents of it";
         return false;
     }
 }
@@ -270,7 +272,7 @@ char Packet::read()
  * 
  * @param var 
  */
-void Packet::read(int *var)
+void Packet::read(uint16_t *var)
 {
     //Create a buffer
     char buff[2];
@@ -287,7 +289,7 @@ void Packet::read(int *var)
  * 
  * @param var 
  */
-void Packet::read(long *var)
+void Packet::read(uint32_t *var)
 {
     //Create a buffer
     char buff[4];
